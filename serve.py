@@ -123,14 +123,25 @@ def main():
     print("Starting vLLM server...")
     vllm_cmd = build_vllm_cmd()
     print(f"  cmd: {' '.join(vllm_cmd)}")
+    log_path = Path("results/vllm_server.log")
+    log_path.parent.mkdir(parents=True, exist_ok=True)
+    log_file = open(log_path, "w")
     server_proc = subprocess.Popen(
-        vllm_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+        vllm_cmd, stdout=log_file, stderr=subprocess.STDOUT,
     )
 
     try:
-        print("Waiting for server...")
+        print(f"Waiting for server (log: {log_path})...")
         if not wait_for_server(timeout=300):
-            print("ERROR: vLLM server failed to start within timeout")
+            log_file.flush()
+            # Print last 30 lines of server log for debugging
+            print("\nERROR: vLLM server failed to start. Last 30 lines of log:")
+            print("-" * 60)
+            with open(log_path) as f:
+                lines = f.readlines()
+                for line in lines[-30:]:
+                    print(line, end="")
+            print("-" * 60)
             server_proc.terminate()
             sys.exit(1)
         print("Server ready.\n")
@@ -217,7 +228,8 @@ def main():
             server_proc.wait(timeout=10)
         except subprocess.TimeoutExpired:
             server_proc.kill()
-        print("Server stopped.")
+        log_file.close()
+        print(f"Server stopped. Full log: {log_path}")
 
 
 if __name__ == "__main__":

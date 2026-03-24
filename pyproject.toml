@@ -1,0 +1,12 @@
+[project]
+name = "autoinference"
+version = "0.1.0"
+description = "Agent-driven inference optimization for vLLM"
+requires-python = ">=3.10"
+dependencies = [
+    "vllm>=0.8.0",
+    "lm-eval[api]>=0.4.11",
+    "guidellm[recommended]",
+    "requests>=2.31.0",
+    "datasets>=2.19.0",
+]

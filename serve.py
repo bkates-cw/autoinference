@@ -91,6 +91,11 @@ def get_model():
     return MODEL
 
 
+def is_quick():
+    """--quick flag for fast local testing."""
+    return "--quick" in sys.argv
+
+
 def build_vllm_cmd(model):
     cmd = [
         sys.executable, "-m", "vllm.entrypoints.openai.api_server",
@@ -157,7 +162,9 @@ def main():
 
         # --- Run lm_eval (accuracy) ---
         # Uses local-completions to talk to the already-running vLLM server
-        print("Running accuracy benchmarks...")
+        quick = is_quick()
+        limit = "5" if quick else "20"
+        print(f"Running accuracy benchmarks (limit={limit})...")
         Path("results/lm_eval").mkdir(parents=True, exist_ok=True)
         lm_eval_cmd = [
             sys.executable, "-m", "lm_eval",
@@ -170,7 +177,7 @@ def main():
             ),
             "--tasks", "gsm8k",
             "--num_fewshot", "5",
-            "--limit", "20",
+            "--limit", limit,
             "--batch_size", "1",
             "--output_path", "results/lm_eval",
         ]
@@ -194,12 +201,14 @@ def main():
         format_rate, _ = run_format_canary(client)
 
         # --- Run guidellm (latency) ---
-        print("Running latency benchmark...")
+        guidellm_seconds = "10" if quick else "30"
+        guidellm_profile = "synchronous" if quick else "sweep"
+        print(f"Running latency benchmark (profile={guidellm_profile}, {guidellm_seconds}s)...")
         guidellm_cmd = [
             sys.executable, "-m", "guidellm", "benchmark",
             "--target", f"http://localhost:{PORT}",
-            "--profile", "sweep",
-            "--max-seconds", "30",
+            "--profile", guidellm_profile,
+            "--max-seconds", guidellm_seconds,
             "--data", "prompt_tokens=256,output_tokens=128",
             "--output-path", "results/guidellm.json",
         ]

@@ -191,48 +191,88 @@ def parse_lm_eval_results(results_path: str) -> AccuracyResult:
 # =============================================================================
 
 
+def _percentile(values: list[float], pct: float) -> float:
+    """Calculate percentile from a list of values."""
+    if not values:
+        return 0.0
+    sorted_vals = sorted(values)
+    k = (len(sorted_vals) - 1) * (pct / 100)
+    f = int(k)
+    c = f + 1
+    if c >= len(sorted_vals):
+        return sorted_vals[f]
+    return sorted_vals[f] + (k - f) * (sorted_vals[c] - sorted_vals[f])
+
+
 def parse_guidellm_results(results_path: str) -> LatencyResult:
     """
     Parse guidellm benchmark JSON output.
 
-    guidellm writes benchmarks.json with benchmark entries containing
-    metrics like request_latency, time_to_first_token, etc. with
-    percentile distributions.
+    guidellm stores per-request stats as flat objects with fields like
+    time_to_first_token_ms, request_start_time, request_end_time, etc.
+    We aggregate across all completed requests to compute percentiles.
     """
     with open(results_path) as f:
         data = json.load(f)
 
     lat = LatencyResult()
 
-    # guidellm outputs a list of benchmarks (one per rate point in sweep)
-    # Use the last benchmark (highest sustainable rate) or the single result
-    benchmarks = data if isinstance(data, list) else data.get("benchmarks", [data])
-    if not benchmarks:
+    # guidellm v0.5+ structure: data["benchmarks"][N]["requests"][M]
+    # Each benchmark is a rate point in the sweep.
+    # We use the first benchmark (synchronous baseline) for comparable metrics.
+    requests = []
+    if isinstance(data, dict) and "benchmarks" in data:
+        benchmarks = data["benchmarks"]
+        if benchmarks and isinstance(benchmarks, list):
+            # Use first benchmark (synchronous) for cleanest baseline numbers
+            bench = benchmarks[0]
+            if isinstance(bench, dict):
+                requests = bench.get("requests", bench.get("request_stats", []))
+    elif isinstance(data, list):
+        requests = data
+
+    # Filter to items that look like request stats
+    stats = [
+        r for r in requests
+        if isinstance(r, dict) and "time_to_first_token_ms" in r
+    ]
+
+    if not stats:
         return lat
 
-    # Use the benchmark with highest successful request rate
-    bench = max(benchmarks, key=lambda b: b.get("request_rate", 0)) if len(benchmarks) > 1 else benchmarks[-1]
+    # Collect per-request metrics (skip nulls)
+    ttft_values = [r["time_to_first_token_ms"] for r in stats
+                   if r.get("time_to_first_token_ms") is not None]
 
-    # Extract metrics from the benchmark
-    metrics = bench.get("metrics", bench)
+    # E2E: compute from start/end times if request_latency is null
+    e2e_values = []
+    for r in stats:
+        if r.get("request_latency") is not None:
+            e2e_values.append(r["request_latency"])
+        elif r.get("request_start_time") and r.get("request_end_time"):
+            e2e_ms = (r["request_end_time"] - r["request_start_time"]) * 1000
+            e2e_values.append(e2e_ms)
 
-    # TTFT
-    ttft = metrics.get("time_to_first_token", metrics.get("ttft", {}))
-    if isinstance(ttft, dict):
-        percentiles = ttft.get("percentiles", {})
-        lat.p50_ttft_ms = percentiles.get("p50", percentiles.get("50", 0)) * 1000
-        lat.p95_ttft_ms = percentiles.get("p95", percentiles.get("95", 0)) * 1000
+    output_tokens = [r.get("output_tokens", 0) for r in stats
+                     if r.get("output_tokens") is not None]
 
-    # E2E / request latency
-    e2e = metrics.get("request_latency", metrics.get("e2e", {}))
-    if isinstance(e2e, dict):
-        percentiles = e2e.get("percentiles", {})
-        lat.p50_e2e_ms = percentiles.get("p50", percentiles.get("50", 0)) * 1000
-        lat.p95_e2e_ms = percentiles.get("p95", percentiles.get("95", 0)) * 1000
+    # Compute percentiles
+    lat.p50_ttft_ms = _percentile(ttft_values, 50)
+    lat.p95_ttft_ms = _percentile(ttft_values, 95)
+    lat.p50_e2e_ms = _percentile(e2e_values, 50)
+    lat.p95_e2e_ms = _percentile(e2e_values, 95)
 
-    # Throughput
-    lat.request_throughput = metrics.get("request_rate", metrics.get("completed_request_rate", 0))
-    lat.output_tokens_per_second = metrics.get("output_tokens_per_second", metrics.get("output_token_throughput", 0))
+    # Throughput: total requests / wall clock time
+    start_times = [r["request_start_time"] for r in stats
+                   if r.get("request_start_time") is not None]
+    end_times = [r["request_end_time"] for r in stats
+                 if r.get("request_end_time") is not None]
+    if start_times and end_times:
+        wall_time = max(end_times) - min(start_times)
+        if wall_time > 0:
+            lat.request_throughput = len(stats) / wall_time
+            total_output_tokens = sum(output_tokens)
+            lat.output_tokens_per_second = total_output_tokens / wall_time
 
     return lat
 

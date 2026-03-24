@@ -217,17 +217,21 @@ def parse_guidellm_results(results_path: str) -> LatencyResult:
 
     lat = LatencyResult()
 
-    # guidellm v0.5+ structure: data["benchmarks"][N]["requests"][M]
+    # guidellm v0.5+ structure:
+    #   data["benchmarks"][N]["requests"]["successful"] -> list of request stats
     # Each benchmark is a rate point in the sweep.
     # We use the first benchmark (synchronous baseline) for comparable metrics.
     requests = []
     if isinstance(data, dict) and "benchmarks" in data:
         benchmarks = data["benchmarks"]
         if benchmarks and isinstance(benchmarks, list):
-            # Use first benchmark (synchronous) for cleanest baseline numbers
             bench = benchmarks[0]
             if isinstance(bench, dict):
-                requests = bench.get("requests", bench.get("request_stats", []))
+                reqs = bench.get("requests", {})
+                if isinstance(reqs, dict):
+                    requests = reqs.get("successful", [])
+                elif isinstance(reqs, list):
+                    requests = reqs
     elif isinstance(data, list):
         requests = data
 

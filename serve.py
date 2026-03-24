@@ -83,10 +83,18 @@ vllm_args = {
 # DO NOT EDIT BELOW THIS LINE
 # =============================================================================
 
-def build_vllm_cmd():
+def get_model():
+    """Allow --model override for local testing with smaller models."""
+    for i, arg in enumerate(sys.argv):
+        if arg == "--model" and i + 1 < len(sys.argv):
+            return sys.argv[i + 1]
+    return MODEL
+
+
+def build_vllm_cmd(model):
     cmd = [
         sys.executable, "-m", "vllm.entrypoints.openai.api_server",
-        "--model", MODEL,
+        "--model", model,
         "--port", str(PORT),
         "--trust-remote-code",
     ]
@@ -115,13 +123,14 @@ def wait_for_server(timeout=300):
 
 
 def main():
-    print(f"model: {MODEL}")
+    model = get_model()
+    print(f"model: {model}")
     print(f"config: {json.dumps(vllm_args, indent=2)}")
     print()
 
     # --- Start vLLM ---
     print("Starting vLLM server...")
-    vllm_cmd = build_vllm_cmd()
+    vllm_cmd = build_vllm_cmd(model)
     print(f"  cmd: {' '.join(vllm_cmd)}")
     log_path = Path("results/vllm_server.log")
     log_path.parent.mkdir(parents=True, exist_ok=True)
@@ -154,7 +163,7 @@ def main():
             sys.executable, "-m", "lm_eval",
             "--model", "local-completions",
             "--model_args", (
-                f"model={MODEL},"
+                f"model={model},"
                 f"base_url=http://localhost:{PORT}/v1/completions,"
                 "tokenized_requests=False,"
                 "num_concurrent=1"
@@ -181,7 +190,7 @@ def main():
         print("Running format canary...")
         from eval.benchmarks import run_format_canary
         from eval.client import InferenceClient
-        client = InferenceClient(base_url=f"http://localhost:{PORT}", model=MODEL)
+        client = InferenceClient(base_url=f"http://localhost:{PORT}", model=model)
         format_rate, _ = run_format_canary(client)
 
         # --- Run guidellm (latency) ---

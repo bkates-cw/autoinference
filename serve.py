@@ -196,7 +196,7 @@ def main():
         # --- Run guidellm (latency) ---
         print("Running latency benchmark...")
         guidellm_cmd = [
-            "guidellm", "benchmark",
+            sys.executable, "-m", "guidellm", "benchmark",
             "--target", f"http://localhost:{PORT}",
             "--profile", "sweep",
             "--max-seconds", "30",

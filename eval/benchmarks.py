@@ -248,14 +248,13 @@ def parse_guidellm_results(results_path: str) -> LatencyResult:
     ttft_values = [r["time_to_first_token_ms"] for r in stats
                    if r.get("time_to_first_token_ms") is not None]
 
-    # E2E: compute from start/end times if request_latency is null
+    # E2E: request_latency is in seconds, convert to ms
     e2e_values = []
     for r in stats:
         if r.get("request_latency") is not None:
-            e2e_values.append(r["request_latency"])
+            e2e_values.append(r["request_latency"] * 1000)
         elif r.get("request_start_time") and r.get("request_end_time"):
-            e2e_ms = (r["request_end_time"] - r["request_start_time"]) * 1000
-            e2e_values.append(e2e_ms)
+            e2e_values.append((r["request_end_time"] - r["request_start_time"]) * 1000)
 
     output_tokens = [r.get("output_tokens", 0) for r in stats
                      if r.get("output_tokens") is not None]

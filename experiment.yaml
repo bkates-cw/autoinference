@@ -1,0 +1,39 @@
+resources:
+  accelerators: {H100:1, H200:1}
+  image_id: docker:nvcr.io/nvidia/pytorch:25.01-py3
+  infra: kubernetes
+
+workdir: .
+
+envs:
+  EXPERIMENT_ID: baseline
+  EXPERIMENT_DESC: "baseline run"
+  WANDB_API_KEY: "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"
+  WANDB_PROJECT: "autoinference"
+  WANDB_ENTITY: "cwhackathon"
+
+setup: |
+  pip install uv
+  uv sync
+  # Skip if using the pre-built base image (model + datasets already cached)
+  uv run prepare.py --skip-baseline
+
+run: |
+  uv run serve.py 2>&1 | tee run.log
+  EXIT_CODE=${PIPESTATUS[0]}
+
+  if [ $EXIT_CODE -ne 0 ]; then
+    echo "EXPERIMENT_STATUS: crash"
+  else
+    THROUGHPUT=$(grep "^request_throughput:" run.log | awk '{print $2}')
+    OUTPUT_TPS=$(grep "^output_tokens_per_second:" run.log | awk '{print $2}')
+    P50_TTFT=$(grep "^p50_ttft_ms:" run.log | awk '{print $2}')
+    P95_TTFT=$(grep "^p95_ttft_ms:" run.log | awk '{print $2}')
+    P50_E2E=$(grep "^p50_e2e_ms:" run.log | awk '{print $2}')
+    P95_E2E=$(grep "^p95_e2e_ms:" run.log | awk '{print $2}')
+    GSM8K=$(grep "^gsm8k_em:" run.log | awk '{print $2}')
+    FORMAT=$(grep "^format_valid_rate:" run.log | awk '{print $2}')
+
+    echo "EXPERIMENT_STATUS: done"
+    echo "EXPERIMENT_RESULT: ${EXPERIMENT_ID} throughput=${THROUGHPUT} output_tps=${OUTPUT_TPS} p50_ttft=${P50_TTFT} p95_ttft=${P95_TTFT} p50_e2e=${P50_E2E} p95_e2e=${P95_E2E} gsm8k=${GSM8K} format=${FORMAT}"
+  fi

@@ -17,12 +17,14 @@ Metrics are printed as key: value lines:
 """
 
 import json
+import os
 import subprocess
 import sys
 import time
 from pathlib import Path
 
 import requests
+import wandb
 
 # =============================================================================
 # MODEL (do not change)
@@ -135,6 +137,18 @@ def main():
     print(f"config: {json.dumps(vllm_args, indent=2)}")
     print()
 
+    # --- W&B init ---
+    wandb.init(
+        entity=os.environ.get("WANDB_ENTITY", None),
+        project=os.environ.get("WANDB_PROJECT", "research"),
+        name=os.environ.get("EXPERIMENT_ID", "baseline"),
+        notes=os.environ.get("EXPERIMENT_DESC", ""),
+        config={
+            **vllm_args,
+            "model": model,
+        },
+    )
+
     # --- Start vLLM ---
     print("Starting vLLM server...")
     vllm_cmd = build_vllm_cmd(model)
@@ -240,6 +254,23 @@ def main():
             print(f"p95_e2e_ms: {lat.p95_e2e_ms:.1f}")
             print(f"request_throughput: {lat.request_throughput:.2f}")
             print(f"output_tokens_per_second: {lat.output_tokens_per_second:.1f}")
+
+        # --- W&B step log and summary ---
+        step_metrics: dict = {"gsm8k_em": gsm8k_em, "format_valid_rate": format_rate}
+        summary_metrics: dict = {"gsm8k_em": gsm8k_em, "format_valid_rate": format_rate}
+        if lat:
+            step_metrics.update({
+                "p50_ttft_ms": lat.p50_ttft_ms,
+                "p95_ttft_ms": lat.p95_ttft_ms,
+                "p50_e2e_ms": lat.p50_e2e_ms,
+                "p95_e2e_ms": lat.p95_e2e_ms,
+                "request_throughput": lat.request_throughput,
+                "output_tokens_per_second": lat.output_tokens_per_second,
+            })
+            summary_metrics.update(step_metrics)
+        wandb.log(step_metrics, step=1)
+        wandb.summary.update(summary_metrics)
+        wandb.finish()
 
     finally:
         print("\nShutting down vLLM server...")

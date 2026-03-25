@@ -9,4 +9,5 @@ dependencies = [
     "guidellm[recommended]",
     "requests>=2.31.0",
     "datasets>=2.19.0",
+    "wandb>=0.19.0",
 ]

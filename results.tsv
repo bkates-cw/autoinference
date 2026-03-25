@@ -1,1 +1,5 @@
 commit	throughput	p95_ttft	gsm8k_em	status	description
+9c95493	1.68	19.5	0.8600	keep	baseline: max-num-batched-tokens=8192, max-num-seqs=64, gpu-memory-utilization=0.90
+9c95493	1.68	22.3	0.8600	discard	max-num-batched-tokens=16384 — no throughput gain (synchronous benchmark, bottleneck is generation speed)
+9c95493	0.00	0.0	0.0000	crash	kv-cache-dtype fp8 + gpu-memory-utilization 0.95 — FAILED_SETUP (workdir missing pyproject.toml)
+6372b0f	2.19	17.9	0.8400	keep	fp8 weight quantization — +30% throughput (1.68->2.19)

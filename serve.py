@@ -72,10 +72,9 @@ vllm_args = {
     "tensor-parallel-size": 1,
 
     # --- Speculative decoding (uncomment to enable) ---
-    # Best for low-QPS, memory-bound workloads. Lossless but affects reproducibility.
-    # "speculative-model": "[ngram]",
-    # "num-speculative-tokens": 4,
-    # "ngram-prompt-lookup-max": 4,
+    # Uses --speculative-config JSON. Best for low-QPS, memory-bound workloads.
+    # NOTE: old flags (--speculative-model, --num-speculative-tokens) are REMOVED in vLLM 0.8+.
+    # "speculative-config": '{"method": "ngram", "num_speculative_tokens": 4, "prompt_lookup_max": 4}',
 }
 
 
@@ -114,9 +113,12 @@ def build_vllm_cmd(model):
     return cmd
 
 
-def wait_for_server(timeout=300):
+def wait_for_server(server_proc, timeout=300):
     start = time.time()
     while time.time() - start < timeout:
+        # If the process already exited, fail fast instead of waiting the full timeout
+        if server_proc.poll() is not None:
+            return False
         try:
             r = requests.get(f"http://localhost:{PORT}/health", timeout=2)
             if r.status_code == 200:
@@ -146,7 +148,7 @@ def main():
 
     try:
         print(f"Waiting for server (log: {log_path})...")
-        if not wait_for_server(timeout=300):
+        if not wait_for_server(server_proc, timeout=300):
             log_file.flush()
             # Print last 30 lines of server log for debugging
             print("\nERROR: vLLM server failed to start. Last 30 lines of log:")

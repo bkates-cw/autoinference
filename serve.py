@@ -48,9 +48,10 @@ vllm_args = {
     "max-num-seqs": 64,
 
     # GPU memory fraction for KV cache.
-    # Higher = more cache, fewer preemptions. Too high = OOM risk.
-    # Try: 0.80, 0.85, 0.90, 0.95
-    "gpu-memory-utilization": 0.90,
+    # 0.88 is the minimum that works for this 35B MoE model on H100 80GB (0.85 crashes).
+    # Surprisingly gives better throughput (1.47) than 0.90 (1.40) — smaller KV cache
+    # reduces memory management overhead during decode.
+    "gpu-memory-utilization": 0.88,
 
     # KV cache precision. FP8 saves ~50% cache memory.
     # Try: auto, fp8

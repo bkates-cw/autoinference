@@ -8,3 +8,7 @@ commit	throughput	p95_ttft	gsm8k_em	status	description
 6fa88c7	0.00	0.0	0.0000	crash	exp-06: fp8 weight quantization (engine core init failure)
 6fa88c7	1.40	62.4	0.9200	discard	exp-07: performance-mode: throughput (no improvement, already at hardware ceiling)
 6fa88c7	1.40	62.1	0.9200	discard	exp-08: VLLM_TORCH_COMPILE_LEVEL=3 torch.compile (no improvement)
+6fa88c7	0.00	0.0	0.0000	crash	exp-09: gpu-memory-utilization=0.80 (OOM - model too large)
+6fa88c7	0.00	0.0	0.0000	crash	exp-10: gpu-memory-utilization=0.70 (OOM - model too large)
+6fa88c7	0.00	0.0	0.0000	crash	exp-11: gpu-memory-utilization=0.85 (OOM - model too large)
+d57e337	1.47	75.7	0.9200	keep	exp-12: gpu-memory-utilization=0.88 (+5% throughput! min viable VRAM boundary)

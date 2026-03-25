@@ -52,7 +52,8 @@ vllm_args = {
     # GPU memory fraction for KV cache.
     # Higher = more cache, fewer preemptions. Too high = OOM risk.
     # Try: 0.80, 0.85, 0.90, 0.95
-    "gpu-memory-utilization": 0.90,
+    # exp-12: 0.85 outperforms 0.90 (6.92 vs 6.90 — less allocation overhead)
+    "gpu-memory-utilization": 0.85,
 
     # KV cache precision. FP8 saves ~50% cache memory.
     # Try: auto, fp8

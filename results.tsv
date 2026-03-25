@@ -10,3 +10,5 @@ eda4a58	5.24	548.7	0.8400	discard	kv-cache-dtype=fp8 degraded accuracy -8.7% (fa
 8823bfc	6.62	122.7	0.9200	discard	performance-mode=throughput scheduler slower (6.62 vs 6.90)
 8823bfc	6.88	127.8	0.9200	discard	FLASHINFER attention backend marginal regression
 8823bfc	6.54	170.6	0.9200	discard	VLLM_USE_V1=0 legacy engine much slower
+TBD	6.92	113.9	0.9200	keep	VRAM: gpu-memory-utilization=0.85 new best (+0.3%, less alloc overhead)
+TBD	0.00	0.0	0.0000	crash	VRAM: gpu-memory-utilization=0.80 vLLM engine init failed

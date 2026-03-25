@@ -18,3 +18,5 @@ a9f9771	6.88	120.3	0.9200	discard	speculative decoding ngram-3 no gain on random
 a9f9771	0.00	0.0	0.0000	crash	block-size=32 vLLM engine init failed
 a9f9771	6.91	117.5	0.9200	discard	disable prefix-caching marginal regression (6.91 vs 6.92)
 a9f9771	0.00	0.0	0.0000	crash	max-num-batched-tokens=12288 transient engine init failure
+a9f9771	6.89	128.7	0.9200	discard	remove override-generation-config no improvement (6.89 vs 6.92)
+a9f9771	0.00	0.0	0.0000	crash	swap-space=0 vLLM needs some swap to initialize

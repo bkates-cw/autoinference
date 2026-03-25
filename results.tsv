@@ -16,3 +16,5 @@ a9f9771	6.91	115.8	0.9200	discard	VRAM: gpu-memory-utilization=0.83 marginal reg
 a9f9771	0.00	0.0	0.0000	crash	VRAM: gpu-memory-utilization=0.82 vLLM engine init failed
 a9f9771	6.88	120.3	0.9200	discard	speculative decoding ngram-3 no gain on random prompts (6.88 vs 6.92)
 a9f9771	0.00	0.0	0.0000	crash	block-size=32 vLLM engine init failed
+a9f9771	6.91	117.5	0.9200	discard	disable prefix-caching marginal regression (6.91 vs 6.92)
+a9f9771	0.00	0.0	0.0000	crash	max-num-batched-tokens=12288 transient engine init failure

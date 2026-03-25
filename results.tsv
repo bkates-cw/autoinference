@@ -1,1 +1,10 @@
 commit	throughput	p95_ttft	gsm8k_em	status	description
+6fa88c7	1.40	61.2	0.9200	keep	baseline: max-num-batched-tokens=8192, max-num-seqs=64, gpu-memory-utilization=0.90, max-model-len=4096, enable-prefix-caching=True
+6fa88c7	1.39	80.6	0.9200	discard	exp-01: max-num-batched-tokens=16384, max-num-seqs=128 (synchronous benchmark, no batch benefit)
+6fa88c7	0.00	0.0	0.0000	crash	exp-02: chunked-prefill + 16384/128 (setup failed: missing pyproject.toml on new cluster)
+6fa88c7	0.94	67.2	0.8200	discard	exp-03: ngram speculative decoding num_speculative_tokens=5 (hurt accuracy and throughput)
+6fa88c7	1.37	60.6	0.8400	discard	exp-04: fp8 kv-cache-dtype (hurt accuracy, gsm8k dropped below 5% guardrail)
+6fa88c7	1.40	63.3	0.9200	discard	exp-05: VLLM_ATTENTION_BACKEND=FLASHINFER (same as baseline, FlashInfer already default)
+6fa88c7	0.00	0.0	0.0000	crash	exp-06: fp8 weight quantization (engine core init failure)
+6fa88c7	1.40	62.4	0.9200	discard	exp-07: performance-mode: throughput (no improvement, already at hardware ceiling)
+6fa88c7	1.40	62.1	0.9200	discard	exp-08: VLLM_TORCH_COMPILE_LEVEL=3 torch.compile (no improvement)

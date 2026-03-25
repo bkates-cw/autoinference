@@ -2,7 +2,7 @@
 name = "autoinference"
 version = "0.1.0"
 description = "Agent-driven inference optimization for vLLM"
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 dependencies = [
     "vllm>=0.8.0",
     "lm-eval[api]>=0.4.11",

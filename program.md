@@ -55,6 +55,12 @@ c3d4e5f	11.00	450.1	0.8000	discard	fp8 quantization degraded accuracy
 d4e5f6g	0.00	0.0	0.0000	crash	speculative decoding OOM
 ```
 
+## Experiment Naming
+
+Prefix all `EXPERIMENT_ID` values with a short model identifier derived from the `MODEL` variable in `serve.py` (e.g., `Qwen/Qwen3-4B` → `qwen3-4b`, `Qwen/Qwen3.5-35B-A3B` → `qwen3.5-35b-a3b`). Examples:
+- Smoke test: `qwen3-4b-smoke`
+- Experiments: `qwen3-4b-exp-01`, `qwen3-4b-exp-02`, etc.
+
 ## The Experiment Loop
 
 The experiment runs on a dedicated branch named after the model (e.g. `autoinference/qwen3-4b-mar25`). Read the `MODEL` variable from `serve.py` to construct the branch name.

@@ -165,7 +165,7 @@ def main():
         # --- Run lm_eval (accuracy) ---
         # Uses local-completions to talk to the already-running vLLM server
         quick = is_quick()
-        limit = "5" if quick else "20"
+        limit = "5" if quick else "50"
         print(f"Running accuracy benchmarks (limit={limit})...")
         Path("results/lm_eval").mkdir(parents=True, exist_ok=True)
         lm_eval_cmd = [

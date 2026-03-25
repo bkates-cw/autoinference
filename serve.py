@@ -59,7 +59,7 @@ vllm_args = {
     # Weight quantization.
     # Try: None (bf16 default), "fp8", "awq", "gptq"
     # Note: awq/gptq require pre-quantized model checkpoints
-    # "quantization": None,
+    "quantization": "fp8",  # exp-05: fp8 weight quant — reduces model from ~8GB to ~4GB, H100 fp8 hardware support
 
     # Context cap. Lower = more KV capacity = more concurrency.
     # Try: 2048, 4096, 8192

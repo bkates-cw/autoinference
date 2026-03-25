@@ -111,6 +111,36 @@ Otherwise revert `serve.py` to the previous commit and try different parameters.
 - Lower `max-model-len` if you don't need long context — frees KV cache.
 - Add comments to `serve.py` explaining WHY you chose certain values.
 
+## W&B Experiment Overview Run
+
+In addition to the per-experiment W&B runs created by `serve.py` (via `instructions.md`), maintain a **single overview W&B run** that aggregates all experiment results into one chart.
+
+At the start of the experiment loop, create the overview run:
+
+```python
+import wandb, os
+overview_run = wandb.init(
+    entity=os.environ.get("WANDB_ENTITY", None),
+    project=os.environ.get("WANDB_PROJECT", "research"),
+    name="experiment-loop-overview",
+    notes="Aggregated metrics across all experiments",
+)
+```
+
+After collecting results from each experiment, log them to this run:
+
+```python
+overview_run.log({
+    "request_throughput": throughput,
+    "p95_ttft_ms": p95_ttft,
+    "gsm8k_em": gsm8k_em,
+})
+```
+
+This gives you one continuous chart showing how metrics evolve across experiments, while the individual per-experiment runs remain available for drill-down.
+
+**How to do this from the shell**: Use a small Python script or inline snippet to log to the overview run after parsing each experiment's logs. Save the run ID so you can resume it across batches.
+
 ## What You Cannot Touch
 
 - `prepare.py` — setup script

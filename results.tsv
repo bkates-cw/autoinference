@@ -24,3 +24,6 @@ a9f9771	0.00	0.0	0.0000	crash	swap-space=0 vLLM needs some swap to initialize
 a9f9771	0.00	0.0	0.0000	crash	VLLM_FUSED_MOE_CHUNK_SIZE=4096 engine init failed
 5804071	6.91	117.3	0.9200	discard	VLLM_FUSED_MOE_CHUNK_SIZE=65536 marginal regression (6.91 vs 6.94)
 5804071	0.00	0.0	0.0000	crash	VLLM_FUSED_MOE_CHUNK_SIZE=16384 engine init failed
+5804071	0.00	0.0	0.0000	crash	max-num-seqs=256 OOM: Available KV cache memory -1.18 GiB
+5804071	0.00	0.0	0.0000	crash	tokenizer-pool-size=4 unrecognized argument in this vLLM version
+5804071	0.00	0.0	0.0000	crash	moe-backend=deep_gemm not supported for unquantized MoE

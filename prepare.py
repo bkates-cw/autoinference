@@ -14,7 +14,7 @@ import argparse
 
 def main():
     parser = argparse.ArgumentParser(description="Prepare auto-inference environment")
-    parser.add_argument("--model", default="Qwen/Qwen3-4B")
+    parser.add_argument("--model", default="Qwen/Qwen3.5-35B-A3B")
     parser.add_argument("--skip-baseline", action="store_true")
     args = parser.parse_args()
 

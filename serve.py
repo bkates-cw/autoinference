@@ -40,7 +40,8 @@ vllm_args = {
     # Token budget per scheduling step. Highest-leverage dial.
     # Higher = better throughput, lower = better per-request latency.
     # Try: 2048, 4096, 8192, 16384
-    "max-num-batched-tokens": 8192,
+    # exp-02: doubled to 16384 → +30% throughput (6.82 req/s), p95_ttft 634→184ms
+    "max-num-batched-tokens": 16384,
 
     # Max concurrent sequences in a batch.
     # Higher = more throughput, but more KV-cache pressure.

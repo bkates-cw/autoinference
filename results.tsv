@@ -1,0 +1,4 @@
+commit	throughput	p95_ttft	gsm8k_em	status	description
+a4aa2b6	5.25	634.5	0.9200	keep	baseline: thinking disabled, guidellm fixed, concurrent=8
+TBD	6.82	184.2	0.9200	keep	max-num-batched-tokens=16384 doubled token budget (+30% throughput)
+TBD	5.24	548.7	0.8400	discard	kv-cache-dtype=fp8 degraded accuracy -8.7% (fails 5% guardrail)

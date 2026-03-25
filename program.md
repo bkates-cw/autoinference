@@ -67,7 +67,7 @@ LOOP FOREVER:
 4. Run the experiment: `uv run serve.py > run.log 2>&1` (redirect everything — do NOT use tee or let output flood your context).
 5. Read out the results: `grep "^gsm8k_em:\|^format_valid_rate:\|^p95_ttft_ms:\|^request_throughput:" run.log`
 6. If the grep output is empty, the run crashed. Run `tail -n 50 run.log` to read the error and attempt a fix.
-7. Record the results in the TSV (NOTE: do not commit results.tsv, leave it untracked by git).
+7. Record the results in the TSV and commit it alongside any code changes.
 8. If throughput improved AND guardrails pass, you "advance" the branch, keeping the git commit.
 9. If throughput is equal or worse, or guardrails fail, `git reset --hard HEAD~1` to revert.
 

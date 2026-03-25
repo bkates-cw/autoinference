@@ -74,6 +74,9 @@ vllm_args = {
     # Try: 1, 2, 4
     "tensor-parallel-size": 1,
 
+    # Compile CUDA graphs only for sizes [1,2,4,8] — reduces overhead vs default
+    "compilation-config": '{"compile_sizes": [1, 2, 4, 8]}',
+
     # --- Speculative decoding (uncomment to enable) ---
     # Uses --speculative-config JSON. Best for low-QPS, memory-bound workloads.
     # NOTE: old flags (--speculative-model, --num-speculative-tokens) are REMOVED in vLLM 0.8+.

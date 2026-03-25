@@ -17,12 +17,14 @@ Metrics are printed as key: value lines:
 """
 
 import json
+import os
 import subprocess
 import sys
 import time
 from pathlib import Path
 
 import requests
+import wandb
 
 # =============================================================================
 # MODEL (do not change)
@@ -70,6 +72,11 @@ vllm_args = {
     # Tensor parallelism (multi-GPU only).
     # Try: 1, 2, 4
     "tensor-parallel-size": 1,
+
+    # Disable Qwen3 thinking mode (<think> tags corrupt format canary validators).
+    # The JSON regex \{[^{}]*\} finds the first { } block, which may land in a
+    # think block rather than the actual response.
+    "override-generation-config": '{"enable_thinking": false}',
 
     # --- Speculative decoding (uncomment to enable) ---
     # Uses --speculative-config JSON. Best for low-QPS, memory-bound workloads.
@@ -134,6 +141,18 @@ def main():
     print(f"model: {model}")
     print(f"config: {json.dumps(vllm_args, indent=2)}")
     print()
+
+    # --- Init W&B ---
+    wandb.init(
+        entity=os.environ.get("WANDB_ENTITY", None),
+        project=os.environ.get("WANDB_PROJECT", "research"),
+        name=os.environ.get("EXPERIMENT_ID", "baseline"),
+        notes=os.environ.get("EXPERIMENT_DESC", ""),
+        config={
+            **vllm_args,
+            "model": model,
+        },
+    )
 
     # --- Start vLLM ---
     print("Starting vLLM server...")
@@ -204,12 +223,14 @@ def main():
 
         # --- Run guidellm (latency) ---
         guidellm_seconds = "10" if quick else "30"
-        guidellm_profile = "concurrent=8"
-        print(f"Running throughput benchmark (profile={guidellm_profile}, {guidellm_seconds}s)...")
+        guidellm_profile = "concurrent"
+        guidellm_rate = "8"
+        print(f"Running throughput benchmark (profile={guidellm_profile}, rate={guidellm_rate}, {guidellm_seconds}s)...")
         guidellm_cmd = [
             sys.executable, "-m", "guidellm", "benchmark",
             "--target", f"http://localhost:{PORT}",
             "--profile", guidellm_profile,
+            "--rate", guidellm_rate,
             "--max-seconds", guidellm_seconds,
             "--data", "prompt_tokens=256,output_tokens=128",
             "--output-path", "results/guidellm.json",
@@ -240,6 +261,21 @@ def main():
             print(f"p95_e2e_ms: {lat.p95_e2e_ms:.1f}")
             print(f"request_throughput: {lat.request_throughput:.2f}")
             print(f"output_tokens_per_second: {lat.output_tokens_per_second:.1f}")
+
+        # --- Log to W&B ---
+        step_metrics = {"gsm8k_em": gsm8k_em, "format_valid_rate": format_rate}
+        if lat:
+            step_metrics.update({
+                "p50_ttft_ms": lat.p50_ttft_ms,
+                "p95_ttft_ms": lat.p95_ttft_ms,
+                "p50_e2e_ms": lat.p50_e2e_ms,
+                "p95_e2e_ms": lat.p95_e2e_ms,
+                "request_throughput": lat.request_throughput,
+                "output_tokens_per_second": lat.output_tokens_per_second,
+            })
+        wandb.log(step_metrics, step=1)
+        wandb.summary.update(step_metrics)
+        wandb.finish()
 
     finally:
         print("\nShutting down vLLM server...")

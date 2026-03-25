@@ -26,3 +26,7 @@ commit	throughput	p95_ttft	gsm8k_em	status	description
 56c3ad4	11.97	44.7	0.8600	keep	exp-25: VRAM min: gpu-memory-util=0.12 (MINIMUM: 9.6GB VRAM)
 56c3ad4	0.00	0.0	0.0000	crash	exp-26: VRAM min: gpu-memory-util=0.10 (too low, engine crash)
 56c3ad4	0.00	0.0	0.0000	crash	exp-27: VRAM min: gpu-memory-util=0.08 (too low, engine crash)
+56c3ad4	11.95	49.5	0.8600	discard	exp-28: gpu-memory-util=0.25 (noise range)
+56c3ad4	12.00	48.6	0.8600	discard	exp-29: dtype=float16 (marginal, noise range)
+56c3ad4	12.42	46.8	0.8600	keep	exp-30: max-num-seqs=8 (match benchmark concurrency, +4% throughput)
+56c3ad4	11.72	54.3	0.8600	discard	exp-31: chunked-prefill=True + max-num-batched-tokens=512 (worse)

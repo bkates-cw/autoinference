@@ -43,9 +43,9 @@ vllm_args = {
     "max-num-batched-tokens": 8192,
 
     # Max concurrent sequences in a batch.
-    # Higher = more throughput, but more KV-cache pressure.
-    # Try: 8, 16, 32, 64, 128
-    "max-num-seqs": 64,
+    # Set to 8 to match the benchmark concurrency exactly.
+    # This reduces scheduler overhead — no need to manage 64 potential slots.
+    "max-num-seqs": 8,
 
     # GPU memory fraction for KV cache.
     # Higher = more cache, fewer preemptions. Too high = OOM risk.

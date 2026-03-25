@@ -2,9 +2,17 @@
 
 Optimize **Qwen3.5-35B-A3B** (MoE: 35B total, 3B active) serving throughput on vLLM while maintaining output quality.
 
-## The One File You Edit
+## What You Can Modify
 
-`serve.py` — contains the `vllm_args` dict that configures vLLM. Modify parameters, run the script, read the scores.
+`serve.py` — you have **full control** over the serving side of this file. You are not limited to tweaking `vllm_args`. You can restructure how the vLLM server is started and configured. Some ideas beyond config tuning:
+
+- **Prompt optimization**: Restructure few-shot prompts to maximize prefix sharing across requests
+- **KV cache warming**: Pre-populate the cache with common prompt prefixes before benchmarking starts
+- **Custom server launch**: Change how vLLM is started — environment variables, engine args, API server flags
+- **Dynamic adaptation**: Profile GPU utilization and adjust settings at runtime
+- **Chunked prefill tuning**: Enable and configure chunked prefill for better interleaving
+
+**Do NOT modify the evaluation/benchmarking code** — the eval functions, metric printing, and benchmark harness must stay unchanged so results remain comparable across experiments.
 
 ## How to Run
 
@@ -55,6 +63,12 @@ c3d4e5f	11.00	450.1	0.8000	discard	fp8 quantization degraded accuracy
 d4e5f6g	0.00	0.0	0.0000	crash	speculative decoding OOM
 ```
 
+## Experiment Naming
+
+Prefix all `EXPERIMENT_ID` values with a short model identifier derived from the `MODEL` variable in `serve.py` (e.g., `Qwen/Qwen3-4B` → `qwen3-4b`, `Qwen/Qwen3.5-35B-A3B` → `qwen3.5-35b-a3b`). Examples:
+- Smoke test: `qwen3-4b-smoke`
+- Experiments: `qwen3-4b-exp-01`, `qwen3-4b-exp-02`, etc.
+
 ## The Experiment Loop
 
 The experiment runs on a dedicated branch named after the model (e.g. `autoinference/qwen3-4b-mar25`). Read the `MODEL` variable from `serve.py` to construct the branch name.
@@ -62,7 +76,7 @@ The experiment runs on a dedicated branch named after the model (e.g. `autoinfer
 LOOP FOREVER:
 
 1. Look at the git state: the current branch/commit you're on.
-2. Tune `serve.py` with an experimental idea by modifying `vllm_args`.
+2. Tune `serve.py` — modify `vllm_args`, restructure serving code, or try deeper optimizations.
 3. git commit.
 4. Run the experiment: `uv run serve.py > run.log 2>&1` (redirect everything — do NOT use tee or let output flood your context).
 5. Read out the results: `grep "^gsm8k_em:\|^format_valid_rate:\|^p95_ttft_ms:\|^request_throughput:" run.log`
@@ -85,7 +99,11 @@ Otherwise revert `serve.py` to the previous commit and try different parameters.
 
 **NEVER STOP**: Once the loop has begun, do NOT pause to ask the human if you should continue. The human might be away and expects you to continue working *indefinitely* until manually stopped. If you run out of ideas, think harder — try combining previous near-misses, try more radical parameter combos, re-read the strategy tips.
 
-## Parameters You Can Tune (in `vllm_args`)
+## Optimization Surface
+
+You can optimize at multiple levels. Start with config tuning, then go deeper.
+
+### Level 1: vLLM Config (`vllm_args` dict)
 
 | Parameter | What it does | Try these values |
 |-----------|-------------|-----------------|
@@ -96,19 +114,32 @@ Otherwise revert `serve.py` to the previous commit and try different parameters.
 | `quantization` | Weight precision | None, fp8, awq, gptq |
 | `max-model-len` | Context cap. Lower = more concurrency. | 2048, 4096, 8192 |
 | `enable-prefix-caching` | Reuse KV blocks for shared prefixes | True, False |
-| `tensor-parallel-size` | GPU sharding (if multi-GPU) | 1, 2, 4 |
-| `speculative-model` | Enable speculative decoding | "[ngram]" |
-| `num-speculative-tokens` | Tokens to speculate | 2, 4, 8 |
+| `enable-chunked-prefill` | Interleave prefill and decode | True, False |
+| `performance-mode` | Scheduler optimization target | throughput, balanced, interactivity |
+| `speculative-config` | Speculative decoding (JSON) | ngram method with various token counts |
+
+### Level 2: Serving Code Changes
+
+Once config tuning plateaus, modify `serve.py` more aggressively:
+- Restructure prompts to share common prefixes (prefix caching wins)
+- Add KV cache warm-up phase before benchmarking
+- Tune vLLM environment variables (e.g., `VLLM_ATTENTION_BACKEND`, `VLLM_USE_V1`)
+- Custom engine args beyond what's in `vllm_args`
+
+### Level 3: VRAM Minimization
+
+After throughput plateaus (3 consecutive batches with no improvement), switch to minimizing VRAM:
+1. Take the best throughput config
+2. Binary search `gpu-memory-utilization` downward (0.90 → 0.85 → 0.80 → ...) until it crashes
+3. Report the minimum VRAM that maintains ≥95% of best throughput
+4. This tells you the cheapest GPU that could serve this model
 
 ## Strategy Tips
 
-- Change 1-2 parameters at a time to attribute improvements.
+- Start with Level 1 config tuning — change 1-2 parameters at a time to attribute improvements.
 - `max-num-batched-tokens` and `max-num-seqs` are usually highest leverage — start there.
-- `enable-prefix-caching` is nearly free — try it early.
-- `kv-cache-dtype: fp8` saves memory with minimal quality impact.
-- Quantization gives big throughput gains but watch accuracy guardrails.
-- Speculative decoding helps most at low QPS / memory-bound workloads.
-- Lower `max-model-len` if you don't need long context — frees KV cache.
+- When config tuning stops improving, move to Level 2 code changes.
+- After throughput plateaus, move to Level 3 VRAM minimization.
 - Add comments to `serve.py` explaining WHY you chose certain values.
 
 ## W&B Experiment Overview Run
@@ -150,9 +181,9 @@ This gives you one continuous chart showing how metrics evolve across experiment
 ## Repo Structure
 
 ```
-serve.py       ← YOU EDIT THIS (the one file)
-program.md     ← you are reading this
-prepare.py     ← one-time setup (model + dataset cache)
-eval/          ← benchmark code (do not touch)
+serve.py       ← YOU EDIT THIS (serving code — full control)
+program.md     ← you are reading this (do not touch)
+prepare.py     ← one-time setup (do not touch)
+eval/          ← benchmark/eval code (do not touch)
 results/       ← experiment outputs
 ```

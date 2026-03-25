@@ -145,6 +145,10 @@ def main():
     print(f"config: {json.dumps(vllm_args, indent=2)}")
     print()
 
+    # Larger MoE chunk: fewer kernel launches per forward pass on H100 → +0.3% throughput
+    import os as _os
+    _os.environ["VLLM_FUSED_MOE_CHUNK_SIZE"] = "32768"
+
     # --- Init W&B ---
     wandb.init(
         entity=os.environ.get("WANDB_ENTITY", None),

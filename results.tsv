@@ -20,3 +20,5 @@ a9f9771	6.91	117.5	0.9200	discard	disable prefix-caching marginal regression (6.
 a9f9771	0.00	0.0	0.0000	crash	max-num-batched-tokens=12288 transient engine init failure
 a9f9771	6.89	128.7	0.9200	discard	remove override-generation-config no improvement (6.89 vs 6.92)
 a9f9771	0.00	0.0	0.0000	crash	swap-space=0 vLLM needs some swap to initialize
+TBD	6.94	116.9	0.9200	keep	VLLM_FUSED_MOE_CHUNK_SIZE=32768 new best +0.3% (fewer MoE kernel launches)
+a9f9771	0.00	0.0	0.0000	crash	VLLM_FUSED_MOE_CHUNK_SIZE=4096 engine init failed

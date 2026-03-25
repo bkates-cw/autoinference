@@ -202,7 +202,7 @@ def main():
 
         # --- Run guidellm (latency) ---
         guidellm_seconds = "10" if quick else "30"
-        guidellm_profile = "synchronous" if quick else "sweep"
+        guidellm_profile = "synchronous"
         print(f"Running latency benchmark (profile={guidellm_profile}, {guidellm_seconds}s)...")
         guidellm_cmd = [
             sys.executable, "-m", "guidellm", "benchmark",

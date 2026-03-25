@@ -28,15 +28,62 @@ request_throughput: 12.5  # requests/sec
 **Primary target:** maximize `request_throughput`
 **Guardrails:** `gsm8k_em` within 5% of baseline, `format_valid_rate` = 1.0
 
+## Logging Results
+
+When an experiment is done, log it to `results.tsv` (tab-separated, NOT comma-separated).
+
+The TSV has a header row and 6 columns:
+
+```
+commit	throughput	p95_ttft	gsm8k_em	status	description
+```
+
+1. git commit hash (short, 7 chars)
+2. request_throughput (e.g. 12.50) — use 0.00 for crashes
+3. p95_ttft_ms (e.g. 245.3) — use 0.0 for crashes
+4. gsm8k_em (e.g. 0.8500) — use 0.0000 for crashes
+5. status: `keep`, `discard`, or `crash`
+6. short text description of what this experiment tried
+
+Example:
+
+```
+commit	throughput	p95_ttft	gsm8k_em	status	description
+a1b2c3d	10.50	312.0	0.8500	keep	baseline
+b2c3d4e	12.50	245.3	0.8500	keep	increase max-num-batched-tokens to 16384
+c3d4e5f	11.00	450.1	0.8000	discard	fp8 quantization degraded accuracy
+d4e5f6g	0.00	0.0	0.0000	crash	speculative decoding OOM
+```
+
+## The Experiment Loop
+
+The experiment runs on a dedicated branch (e.g. `autoinference/mar25`).
+
+LOOP FOREVER:
+
+1. Look at the git state: the current branch/commit you're on.
+2. Tune `serve.py` with an experimental idea by modifying `vllm_args`.
+3. git commit.
+4. Run the experiment: `uv run serve.py > run.log 2>&1` (redirect everything — do NOT use tee or let output flood your context).
+5. Read out the results: `grep "^gsm8k_em:\|^format_valid_rate:\|^p95_ttft_ms:\|^request_throughput:" run.log`
+6. If the grep output is empty, the run crashed. Run `tail -n 50 run.log` to read the error and attempt a fix.
+7. Record the results in the TSV (NOTE: do not commit results.tsv, leave it untracked by git).
+8. If throughput improved AND guardrails pass, you "advance" the branch, keeping the git commit.
+9. If throughput is equal or worse, or guardrails fail, `git reset --hard HEAD~1` to revert.
+
 ## Commit Rule
 
-Commit when:
+Keep a commit (status: `keep`) when ALL are true:
 1. Request throughput improved over baseline
 2. p95 TTFT did not regress badly
 3. GSM8K accuracy within 5% of baseline
 4. Format canary = 100%
 
-Otherwise revert and try different parameters.
+Otherwise revert `serve.py` to the previous commit and try different parameters.
+
+**Crashes**: If a run crashes (OOM, vLLM startup failure, etc.), use your judgment. If it's easy to fix (typo, bad parameter combo), fix and re-run. If the idea is fundamentally broken, log as `crash`, revert, and move on.
+
+**NEVER STOP**: Once the loop has begun, do NOT pause to ask the human if you should continue. The human might be away and expects you to continue working *indefinitely* until manually stopped. If you run out of ideas, think harder — try combining previous near-misses, try more radical parameter combos, re-read the strategy tips.
 
 ## Parameters You Can Tune (in `vllm_args`)
 

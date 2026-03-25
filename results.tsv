@@ -1,0 +1,8 @@
+commit	throughput	p95_ttft	gsm8k_em	status	description
+7d64107	10.24	48.2	0.8600	keep	baseline: max-num-batched-tokens=8192, max-num-seqs=64, max-model-len=4096, prefix-caching=true
+7d64107	10.03	78.7	0.8600	discard	exp-02: max-num-batched-tokens=16384 (no improvement, higher latency)
+7d64107	9.99	45.7	0.8600	discard	exp-03: max-num-seqs=128, enable-chunked-prefill=True (no improvement)
+7d64107	0.00	0.0	0.0000	crash	exp-04: max-model-len=512 (too short for 5-shot GSM8K prompts)
+7d64107	0.00	0.0	0.0000	crash	exp-05: max-model-len=512 + performance-mode=throughput (too short)
+7d64107	11.94	50.0	0.8600	keep	exp-06: max-model-len=2048 (2x more KV blocks, +16.6% throughput)
+7d64107	11.80	47.2	0.8200	discard	exp-07: max-model-len=2048 + kv-cache-dtype=fp8 (worse than exp-06)

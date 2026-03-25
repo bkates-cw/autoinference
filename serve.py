@@ -62,8 +62,9 @@ vllm_args = {
     # "quantization": None,
 
     # Context cap. Lower = more KV capacity = more concurrency.
-    # Try: 2048, 4096, 8192
-    "max-model-len": 4096,
+    # 2048 provides 2x more KV cache blocks vs 4096, improving batching.
+    # 5-shot GSM8K prompts fit within 2048.
+    "max-model-len": 2048,
 
     # Prefix caching: reuse KV blocks for shared few-shot prefixes.
     # Nearly free perf win. Try: True, False

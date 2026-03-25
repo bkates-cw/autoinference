@@ -1,4 +1,6 @@
 commit	throughput	p95_ttft	gsm8k_em	status	description
 a4aa2b6	5.25	634.5	0.9200	keep	baseline: thinking disabled, guidellm fixed, concurrent=8
-TBD	6.82	184.2	0.9200	keep	max-num-batched-tokens=16384 doubled token budget (+30% throughput)
-TBD	5.24	548.7	0.8400	discard	kv-cache-dtype=fp8 degraded accuracy -8.7% (fails 5% guardrail)
+eda4a58	6.82	184.2	0.9200	keep	max-num-batched-tokens=16384 doubled token budget (+30% throughput)
+eda4a58	5.24	548.7	0.8400	discard	kv-cache-dtype=fp8 degraded accuracy -8.7% (fails 5% guardrail)
+TBD	6.90	120.3	0.9200	keep	max-num-seqs=128 doubled concurrent seqs (+1.2%, p95_ttft 184→120ms)
+TBD	6.51	202.0	0.9200	discard	enable-chunked-prefill=True slower than baseline (6.51 vs 6.82)

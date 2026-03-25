@@ -46,7 +46,8 @@ vllm_args = {
     # Max concurrent sequences in a batch.
     # Higher = more throughput, but more KV-cache pressure.
     # Try: 8, 16, 32, 64, 128
-    "max-num-seqs": 64,
+    # exp-04: doubled to 128 → 6.82→6.90, p95_ttft 184→120ms
+    "max-num-seqs": 128,
 
     # GPU memory fraction for KV cache.
     # Higher = more cache, fewer preemptions. Too high = OOM risk.

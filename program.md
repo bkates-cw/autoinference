@@ -57,7 +57,7 @@ d4e5f6g	0.00	0.0	0.0000	crash	speculative decoding OOM
 
 ## The Experiment Loop
 
-The experiment runs on a dedicated branch (e.g. `autoinference/mar25`).
+The experiment runs on a dedicated branch named after the model (e.g. `autoinference/qwen3-4b-mar25`). Read the `MODEL` variable from `serve.py` to construct the branch name.
 
 LOOP FOREVER:
 

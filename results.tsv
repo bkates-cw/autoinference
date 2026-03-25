@@ -3,3 +3,14 @@ commit	throughput	p95_ttft	gsm8k_em	status	description
 9c95493	1.68	22.3	0.8600	discard	max-num-batched-tokens=16384 — no throughput gain (synchronous benchmark, bottleneck is generation speed)
 9c95493	0.00	0.0	0.0000	crash	kv-cache-dtype fp8 + gpu-memory-utilization 0.95 — FAILED_SETUP (workdir missing pyproject.toml)
 6372b0f	2.19	17.9	0.8400	keep	fp8 weight quantization — +30% throughput (1.68->2.19)
+9c95493	1.54	13.8	0.8600	discard	ngram speculative decoding 4 tokens — slower throughput on synchronous benchmark
+9c95493	2.13	18.4	0.8600	discard	fp8 weights+kv+0.95 gpu-mem-util — no gain, format_rate dropped
+9c95493	2.18	17.8	0.8400	discard	fp8 weights + max-model-len 2048 — marginal (2.18 vs 2.19)
+9c95493	2.20	17.5	0.8400	discard	fp8 + no prefix caching — within noise of fp8 baseline (2.20 vs 2.19)
+9c95493	1.58	14.3	0.8400	discard	fp8 + ngram spec 8 tokens — worse than fp8 alone
+9c95493	2.22	17.4	0.8600	discard	fp8 weights+kv — format_valid_rate drops to 0.75
+9c95493	0.65	33.4	0.8000	discard	fp8 weights + enforce-eager — CUDA graphs critical, 3x slowdown
+9c95493	0.00	0.0	0.0000	crash	fp8 + num-scheduler-steps=8 — unrecognized arg in this vLLM build
+9c95493	0.00	0.0	0.0000	crash	fp8 + num-scheduler-steps=16 — unrecognized arg in this vLLM build
+9c95493	2.31	17.3	0.8400	keep	fp8 weights + performance-mode throughput — +37% over baseline, +5.5% over fp8 alone
+9c95493	2.19	17.1	0.8400	discard	fp8 + perf-mode throughput + flashinfer prefill — flashinfer negates perf-mode gain

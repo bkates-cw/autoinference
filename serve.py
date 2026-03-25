@@ -73,6 +73,9 @@ vllm_args = {
     # Try: 1, 2, 4
     "tensor-parallel-size": 1,
 
+    # NVIDIA vLLM custom: optimize for throughput over latency.
+    "performance-mode": "throughput",
+
     # --- Speculative decoding (uncomment to enable) ---
     # Uses --speculative-config JSON. Best for low-QPS, memory-bound workloads.
     # NOTE: old flags (--speculative-model, --num-speculative-tokens) are REMOVED in vLLM 0.8+.

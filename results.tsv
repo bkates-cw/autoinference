@@ -77,3 +77,9 @@ a9c752f	6.83	88.9	0.9000	discard	pre-guidellm warmup: 8 concurrent requests didn
 a9c752f	6.65	121.9	0.8600	discard	lm_eval num_concurrent=8 worse: accuracy dropped + throughput regressed
 a9c752f	6.85	88.3	0.9000	discard	OMP_NUM_THREADS=1 MKL_NUM_THREADS=1: no improvement (6.85 vs 7.11)
 a9c752f	6.66	153.9	0.9000	discard	guidellm-first (no lm_eval warmup): 6.8% regression — lm_eval warmup matters!
+20185f0	6.85	90.1	0.8800	discard	lm_eval limit=100: no improvement over limit=50 (6.85 vs 7.11)
+20185f0	6.84	94.1	0.9000	discard	gpu-util=0.95 + 160 seqs: no improvement over 0.94 (6.84 vs 7.11)
+20185f0	7.00	86.6	0.9000	keep	VLLM_LOGGING_LEVEL=WARNING: +5.4% vs 6.64 warmup baseline (less GIL contention from logging)
+20185f0	6.62	122.1	0.9000	discard	max-num-batched-tokens=20480 marginal regression vs 16384 (6.62 vs 6.65)
+20185f0	6.84	98.8	0.9000	discard	baseline ctrl (no change): 6.84 confirms WARNING env gives real gain (7.00 vs 6.84)
+20185f0	6.75	124.9	0.9000	keep	VLLM_LOGGING_LEVEL=WARNING confirm on gpu-02: +0.10 improvement (6.75 vs 6.65)

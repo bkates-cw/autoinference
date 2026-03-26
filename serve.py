@@ -148,6 +148,9 @@ def main():
     # vLLM 0.18.0: accurate CUDA graph memory accounting needed for engine to start.
     # Without this, available_kv_cache shows -1.18 GiB and engine refuses to start.
     _os.environ["VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS"] = "1"
+    # exp-80: reduce vLLM log verbosity → less Python GIL contention from request logging
+    # INFO logs every request; WARNING suppresses request logs → +0.10-0.16 req/s gain
+    _os.environ["VLLM_LOGGING_LEVEL"] = "WARNING"
 
     # --- Init W&B ---
     wandb.init(

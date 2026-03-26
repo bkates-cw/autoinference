@@ -45,14 +45,13 @@ vllm_args = {
     # Max concurrent sequences in a batch.
     # Higher = more throughput, but more KV-cache pressure.
     # exp-04: 128 → 6.90; exp-50/51: 160 → 7.11-7.12 req/s (new best); 192 no improvement
-    # exp-106: fine-tune between 160 and 192 → try 168
-    "max-num-seqs": 168,
+    # exp-106/107: 168 → 7.02; exp-113: 176 → 7.04 (session best on gpu-01)
+    "max-num-seqs": 176,
 
     # GPU memory fraction for KV cache.
     # Higher = more cache, fewer preemptions. Too high = OOM risk.
-    # exp-50/51: 0.94 + 160 seqs → 7.11-7.12 req/s new best
-    # exp-104: try 0.95 — one more percent for KV cache; risk: close to OOM on H100 80GB
-    "gpu-memory-utilization": 0.95,
+    # exp-50/51: 0.94 + 160 seqs → 7.11-7.12 req/s new best; exp-104: 0.95 regression
+    "gpu-memory-utilization": 0.94,
 
     # KV cache precision. FP8 saves ~50% cache memory.
     # Try: auto, fp8
@@ -158,12 +157,6 @@ def main():
     # exp-80: reduce vLLM log verbosity → less Python GIL contention from request logging
     # INFO logs every request; WARNING suppresses request logs → +0.10-0.16 req/s gain
     _os.environ["VLLM_LOGGING_LEVEL"] = "WARNING"
-    # exp-117: Increase CUDA kernel cache from default 256MB to 4GB.
-    # vLLM compiles many CUDA kernels (MoE routing, attention, activations).
-    # Default 256MB cache causes evictions → kernels recompiled on next use → slower.
-    # Setting 4GB ensures all kernels stay cached → consistent performance from run 1.
-    # This may be the root cause of the "warming effect" observed over 30+ runs.
-    _os.environ["CUDA_CACHE_MAXSIZE"] = "4294967296"  # 4 GB
     # --- Init W&B ---
     wandb.init(
         entity=os.environ.get("WANDB_ENTITY", None),

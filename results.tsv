@@ -143,3 +143,5 @@ e6be508	6.78	120.0	0.9000	discard	exp-116 max-num-seqs=180: regression (6.78 vs 
 e6be508	6.65	124.1	0.9000	discard	warmup-33-gpu02: 6.65 (high TTFT variance — bad cluster state)
 e6be508	6.78	120.0	0.9000	discard	exp-116 max-num-seqs=180: 6.78 (regression — 176 is sweet spot)
 e6be508	6.65	124.1	0.9000	discard	warmup-33-gpu02: 6.65 (cluster in poor state)
+14f682f	6.76	146.4	0.9000	discard	exp-117 CUDA_CACHE_MAXSIZE=4GB gpu-01: 6.76 (high TTFT — cache size not the issue)
+14f682f	6.86	88.0	0.9000	discard	exp-118 CUDA_CACHE_MAXSIZE=4GB gpu-02: 6.86 (normal — no improvement from larger cache)

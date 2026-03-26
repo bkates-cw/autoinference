@@ -199,3 +199,7 @@ d196b5d	0.00	0.0	0.0000	crash	exp-143 moe-backend=flashinfer_cutedsl: crash — 
 9a13f5e	6.83	75.9	0.9000	discard	warmup-54-gpu01: 6.83 (recovered! both clusters in good state now)
 f0fbd05	6.61	138.4	0.9200	discard	exp-147 max-num-seqs=32: 6.61 (bad state p50=113ms — low seqs hurts throughput)
 f0fbd05	6.63	160.1	0.9200	discard	exp-148 max-num-seqs=64: 6.63 (bad state p50=113ms — both clusters bad)
+a85f589	7.11	128.9	0.9000	discard	exp-149 VLLM_LOGGING_LEVEL=ERROR: 7.11 (noise — retest gave 6.85 in good state, p50_e2e lucky 1089ms)
+a85f589	6.65	126.1	0.9000	discard	exp-150 disable-log-stats=True: 6.65 (bad state p50=109ms — inconclusive)
+a85f589	6.84	87.8	0.9000	discard	warmup-56 gpu-01: 6.84 (good state; ERROR logging ≈ WARNING baseline 6.83)
+a85f589	6.85	85.5	0.9000	discard	exp-149-retest gpu-02: 6.85 (good state; confirms ERROR logging = no improvement over WARNING)

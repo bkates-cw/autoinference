@@ -97,3 +97,9 @@ a2f2def	6.63	156.9	0.9200	discard	max-cudagraph-capture-size=8: regression (lm_e
 a2f2def	6.62	136.0	0.9200	discard	max-cudagraph-capture-size=8 + max-num-seqs=192: regression (same eager fallback issue)
 a2f2def	6.65	119.0	0.9000	discard	VLLM_ATTENTION_BACKEND=FLASHINFER: no improvement vs default FA2 (6.65 vs 6.85 baseline)
 a2f2def	6.85	90.5	0.9000	discard	baseline warmup run14 gpu-02: 6.85 — cluster warming continues (was 6.84 at run11)
+83e9a0f	6.84	101.7	0.9000	discard	warmup baseline gpu-01 run14: 6.84 (cluster at 6.84-6.85 steady state after 14 runs)
+83e9a0f	6.85	96.2	0.9000	discard	warmup baseline gpu-02 run15: 6.85 (converged with gpu-01 at ~6.84-6.85)
+83e9a0f	6.76	115.3	0.9000	discard	FUSED_MOE_CHUNK=16384 retry (CUDAGRAPHS fix resolves crash): now stable, 6.76 < 6.84 baseline
+83e9a0f	6.83	90.5	0.9000	discard	FUSED_MOE_CHUNK=49152 retry (CUDAGRAPHS fix resolves OOM): 6.83 ≈ baseline 6.84 (not better than 32768)
+83e9a0f	0.00	0.0	0.0000	crash	disable-hybrid-kv-cache-manager: engine init crash (flag incompatible with V1 engine)
+83e9a0f	6.65	120.5	0.9000	discard	CUDA_DEVICE_MAX_CONNECTIONS=32: no improvement (6.65 vs 6.85 baseline — variance)

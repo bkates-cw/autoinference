@@ -189,3 +189,5 @@ ea6c943	6.63	108.1	0.9000	discard	warmup-48-gpu02: 6.63 (both clusters bad state
 47ce5c3	6.80	76.2	0.9000	discard	warmup-51-gpu02: 6.80 (recovering — p50_ttft=76ms, mostly good state)
 4ae038d	0.00	0.0	0.0000	crash	exp-140 no-enable-chunked-prefill: crash — Qwen3.5 REQUIRES chunked prefill (Mamba cache align)
 4ae038d	0.00	0.0	0.0000	crash	exp-141 moe-backend=flashinfer_cutlass: crash — FlashInfer+CUTLASS not compiled
+d196b5d	0.00	0.0	0.0000	crash	exp-142 moe-backend=flashinfer_trtllm: crash — not compiled
+d196b5d	0.00	0.0	0.0000	crash	exp-143 moe-backend=flashinfer_cutedsl: crash — not compiled

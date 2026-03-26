@@ -41,6 +41,7 @@ vllm_args = {
     # Higher = better throughput, lower = better per-request latency.
     # Try: 2048, 4096, 8192, 16384
     # exp-02: doubled to 16384 → +30% throughput (6.82 req/s), p95_ttft 634→184ms
+    # exp-44: 32768 no benefit vs 16384 (6.58 req/s same)
     "max-num-batched-tokens": 16384,
 
     # Max concurrent sequences in a batch.
@@ -51,10 +52,8 @@ vllm_args = {
 
     # GPU memory fraction for KV cache.
     # Higher = more cache, fewer preemptions. Too high = OOM risk.
-    # exp-12: 0.85 best; but vLLM 0.18.0 now accurately tracks CUDA graph memory.
-    # With VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=1, must be >=0.8705 for KV blocks.
-    # (model=65.53 GiB + CUDA graphs ~3.1 GiB requires >0.8567 of 80 GiB)
-    "gpu-memory-utilization": 0.87,
+    # exp-38: 0.92 + CUDAGRAPHS=1 gives 6.58 req/s; exp-40: same config + thinking fix
+    "gpu-memory-utilization": 0.92,
 
     # KV cache precision. FP8 saves ~50% cache memory.
     # Try: auto, fp8
@@ -77,10 +76,12 @@ vllm_args = {
     # Try: 1, 2, 4
     "tensor-parallel-size": 1,
 
-    # Disable Qwen3 thinking mode (<think> tags corrupt format canary validators).
-    # The JSON regex \{[^{}]*\} finds the first { } block, which may land in a
-    # think block rather than the actual response.
+    # Disable thinking for /v1/completions: enable_thinking:false and suppress_tokens both fail in
+    # vLLM 0.18.0 for completions. Chat completions endpoint respects enable_thinking via
+    # chat_template_kwargs. ThinkStripper below uses /v1/chat/completions for the format canary.
     "override-generation-config": '{"enable_thinking": false}',
+    # exp-45: Enable Qwen3 reasoning parser so chat completions correctly handles thinking disable
+    "reasoning-parser": "qwen3",
 
     # --- Speculative decoding (uncomment to enable) ---
     # Uses --speculative-config JSON. Best for low-QPS, memory-bound workloads.
@@ -229,8 +230,38 @@ def main():
         print("Running format canary...")
         from eval.benchmarks import run_format_canary
         from eval.client import InferenceClient
-        client = InferenceClient(base_url=f"http://localhost:{PORT}", model=model)
-        format_rate, _ = run_format_canary(client)
+        import re as _re
+
+        class _ThinkStripper:
+            """Uses /v1/chat/completions with enable_thinking=False for format canary.
+            vLLM 0.18.0 Qwen3.5: chat template injects <think>\\n\\n</think>\\n\\n prefix
+            when enable_thinking=False, preventing thinking tokens entirely."""
+            def __init__(self, inner): self.inner = inner
+            def __call__(self, prompt):
+                import requests as _req
+                resp = _req.post(
+                    f"{self.inner.base_url}/v1/chat/completions",
+                    json={
+                        "model": self.inner.model,
+                        "messages": [{"role": "user", "content": prompt}],
+                        "temperature": self.inner.temperature,
+                        "top_p": self.inner.top_p,
+                        "max_tokens": self.inner.max_tokens,
+                        "seed": self.inner.seed,
+                        "chat_template_kwargs": {"enable_thinking": False},
+                    },
+                    timeout=120,
+                )
+                resp.raise_for_status()
+                return resp.json()["choices"][0]["message"]["content"]
+
+        client = _ThinkStripper(InferenceClient(base_url=f"http://localhost:{PORT}", model=model))
+        format_rate, canary_details = run_format_canary(client)
+        for d in canary_details:
+            status = "PASS" if d["passed"] else "FAIL"
+            print(f"  [{status}] {d['prompt'][:70]}...")
+            if not d["passed"]:
+                print(f"    raw_output: {repr(d['raw_output'][:400])}")
 
         # --- Run guidellm (latency) ---
         guidellm_seconds = "10" if quick else "30"

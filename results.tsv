@@ -38,3 +38,13 @@ a9f9771	0.00	0.0	0.0000	crash	VLLM_FUSED_MOE_CHUNK_SIZE=4096 engine init failed
 778bb10	0.00	0.0	0.0000	crash	gpu-util=0.87 CUDAGRAPHS=1 192 seqs: KV cache -0.04 GiB
 778bb10	5.54	561.5	0.9200	discard	gpu-util=0.88 CUDAGRAPHS=1: format_valid_rate=0.875 guardrail fail
 778bb10	5.27	636.9	0.9200	discard	gpu-util=0.90 CUDAGRAPHS=1: format_valid_rate=0.875 guardrail fail
+2c9bbf7	5.24	625.2	0.9200	discard	gpu-util=0.92 NO-CUDAGRAPHS: format_valid_rate=0.875 guardrail fail (5.24 req/s)
+2c9bbf7	6.58	144.4	0.9200	discard	gpu-util=0.92 CUDAGRAPHS=1: format_valid_rate=0.875 guardrail fail (best 6.58 req/s)
+2c9bbf7	6.55	166.1	0.9200	discard	debug canary: prompt-2 fails (numbered list); <think> block >512 tokens
+2c9bbf7	6.59	146.9	0.9200	discard	max_thinking_tokens=0 didn't suppress thinking in vLLM 0.18.0
+2c9bbf7	6.60	136.6	0.9200	discard	ThinkStripper strips incomplete think block → empty output; still fails
+2c9bbf7	0.00	0.0	0.0000	crash	--generation-config flag takes model path not JSON (wrong flag name)
+2c9bbf7	6.62	158.4	0.9200	discard	suppress_tokens=[248068] ignored by vLLM 0.18.0 reasoning framework
+2c9bbf7	6.58	0.0	0.9200	discard	suppress_tokens + max-num-batched-tokens=32768: same failure, 32768 no benefit
+2c9bbf7	6.65	0.0	0.9200	keep	FIXED: chat completions+reasoning-parser=qwen3+enable_thinking=False → format=1.0 (6.65 req/s)
+2c9bbf7	6.62	0.0	0.9200	keep	FIXED confirm: same config, 6.62 req/s format=1.0 (p95_ttft=0 due to reasoning parser streaming)

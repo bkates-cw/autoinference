@@ -181,3 +181,5 @@ f2f535d	6.81	74.2	0.9000	discard	exp-135 VLLM_ATTENTION_BACKEND=FLASHINFER: 6.81
 f2f535d	6.85	73.6	0.9000	discard	warmup-47-gpu02: 6.85 (good state stable — good state ceiling ~6.85-6.87)
 2b4bd01	6.83	74.8	0.9000	discard	exp-136 block-size=32: 6.83 (slightly worse than default 16=6.85) — keep default 16
 2b4bd01	0.00	0.0	0.0000	crash	exp-137 moe-backend=aiter: crash — aiter not compiled in this vLLM
+ea6c943	6.64	107.9	0.9000	discard	exp-138 OMP+TOKENIZERS+disable-log-stats: 6.64 (bad state flip — inconclusive)
+ea6c943	6.63	108.1	0.9000	discard	warmup-48-gpu02: 6.63 (both clusters bad state again)

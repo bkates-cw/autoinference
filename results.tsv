@@ -193,3 +193,5 @@ d196b5d	0.00	0.0	0.0000	crash	exp-142 moe-backend=flashinfer_trtllm: crash — n
 d196b5d	0.00	0.0	0.0000	crash	exp-143 moe-backend=flashinfer_cutedsl: crash — not compiled
 539344b	6.62	110.7	0.9000	discard	exp-144 CUDA_DEVICE_MAX_CONNECTIONS=1: 6.62 (bad state — inconclusive; retesting on gpu-02)
 539344b	6.83	73.7	0.9000	discard	warmup-52-gpu02: 6.83 (gpu-02 good state! p50_ttft=74ms — retesting exp on clean state)
+1d70530	6.83	75.0	0.9000	discard	exp-145 CUDA_DEVICE_MAX_CONNECTIONS=1: 6.83 (= baseline 6.83 — no change; discard)
+1d70530	6.64	113.0	0.9000	discard	warmup-53-gpu01: 6.64 (gpu-01 persistent bad state p50_ttft=113ms)

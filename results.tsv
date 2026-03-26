@@ -197,3 +197,5 @@ d196b5d	0.00	0.0	0.0000	crash	exp-143 moe-backend=flashinfer_cutedsl: crash — 
 1d70530	6.64	113.0	0.9000	discard	warmup-53-gpu01: 6.64 (gpu-01 persistent bad state p50_ttft=113ms)
 9a13f5e	6.77	75.9	0.9000	discard	exp-146 PYTORCH_NVFUSER_DISABLE=1: 6.77 (worse than 6.83 — NVFuser helps, keep default)
 9a13f5e	6.83	75.9	0.9000	discard	warmup-54-gpu01: 6.83 (recovered! both clusters in good state now)
+f0fbd05	6.61	138.4	0.9200	discard	exp-147 max-num-seqs=32: 6.61 (bad state p50=113ms — low seqs hurts throughput)
+f0fbd05	6.63	160.1	0.9200	discard	exp-148 max-num-seqs=64: 6.63 (bad state p50=113ms — both clusters bad)

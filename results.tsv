@@ -149,3 +149,5 @@ e6be508	6.65	124.1	0.9000	discard	warmup-33-gpu02: 6.65 (cluster in poor state)
 5395901	6.83	119.3	0.9000	discard	warmup-34-gpu02 (176 seqs, clean base): 6.83 — normal
 b7d36a6	6.79	149.5	0.9400	discard	exp-119 max-num-seqs=8: 6.79 (high TTFT — bad cluster state; seq count hypothesis inconclusive)
 b7d36a6	6.64	144.1	0.9000	discard	warmup-35-gpu02: 6.64 (high TTFT — both clusters in bad state, unusual)
+6f81b62	6.79	121.1	0.9000	discard	warmup-36-gpu01: 6.79 (recovering from bad state — p50_ttft back to 75ms)
+6f81b62	6.83	96.6	0.9000	discard	warmup-36-gpu02: 6.83 (recovered — cluster back to normal)

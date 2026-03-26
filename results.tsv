@@ -57,3 +57,7 @@ c26caa5	7.07	143.0	0.9000	discard	max-num-seqs=192 + gpu-util=0.95: no improveme
 566aae8	6.62	621.2	0.9200	discard	max-num-batched-tokens=24576 big p95_ttft regression (621ms vs 94ms at 16384)
 566aae8	7.08	92.8	0.9000	discard	enable-chunked-prefill=True with 160 seqs: 7.08 vs 7.11 marginal regression
 566aae8	6.87	132.3	0.9000	discard	max-model-len=2048 regression: less KV capacity doesn't help (6.87 vs 7.11)
+b924c82	7.11	86.4	0.9000	discard	max-num-seqs=176: same as 160 (7.11 req/s), confirms 160 is sweet spot
+b924c82	0.00	0.0	0.0000	crash	quantization=fp8: dynamic weight quant not supported for MoE in this vLLM version
+b924c82	0.00	0.0	0.0000	crash	num-scheduler-steps=2: unrecognized argument in vLLM 0.18.0
+b924c82	0.00	0.0	0.0000	crash	num-scheduler-steps=4: unrecognized argument in vLLM 0.18.0

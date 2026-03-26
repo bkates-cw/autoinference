@@ -29,7 +29,7 @@ import wandb
 # =============================================================================
 # MODEL (do not change)
 # =============================================================================
-MODEL = "Qwen/Qwen3-4B"
+MODEL = "Qwen/Qwen3.5-35B-A3B"
 PORT = 8000
 
 # =============================================================================
@@ -179,7 +179,7 @@ def main():
         # --- Run lm_eval (accuracy) ---
         # Uses local-completions to talk to the already-running vLLM server
         quick = is_quick()
-        limit = "5" if quick else "20"
+        limit = "5" if quick else "50"
         print(f"Running accuracy benchmarks (limit={limit})...")
         Path("results/lm_eval").mkdir(parents=True, exist_ok=True)
         lm_eval_cmd = [
@@ -218,8 +218,8 @@ def main():
 
         # --- Run guidellm (latency) ---
         guidellm_seconds = "10" if quick else "30"
-        guidellm_profile = "synchronous"
-        print(f"Running latency benchmark (profile={guidellm_profile}, {guidellm_seconds}s)...")
+        guidellm_profile = "concurrent=8"
+        print(f"Running throughput benchmark (profile={guidellm_profile}, {guidellm_seconds}s)...")
         guidellm_cmd = [
             sys.executable, "-m", "guidellm", "benchmark",
             "--target", f"http://localhost:{PORT}",

@@ -219,3 +219,5 @@ a85f589	6.85	85.5	0.9000	discard	exp-149-retest gpu-02: 6.85 (good state; confir
 65268f4	6.80	148.9	0.9000	discard	exp-163 optimization-level=3: 6.80 (good state — slightly worse, high p95=148ms)
 e10329e	6.81	145.0	0.9000	discard	exp-165 VLLM_LOGGING_LEVEL=CRITICAL: 6.81 (good state — worse, high p95=145ms)
 e10329e	6.86	89.7	0.9000	keep?	exp-166 VLLM_ATTENTION_BACKEND=TRITON_MLA: 6.86 (+0.03 vs 6.83 — MLA-optimized backend! Confirm needed)
+4b63b3d	6.81	110.0	0.9000	discard	exp-167 TRITON_MLA retest gpu-01: 6.81 (good state — neutral, exp-166 was noise)
+4b63b3d	6.66	123.5	0.9000	discard	exp-168 TRITON_MLA retest gpu-02: 6.66 (bad state — TRITON_MLA confirmed neutral)

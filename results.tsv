@@ -73,3 +73,7 @@ b92a704	6.63	148.7	0.9000	discard	PYTORCH_CUDA_ALLOC_CONF=expandable_segments: n
 4236631	6.84	86.7	0.9000	discard	VLLM_ATTENTION_BACKEND=XFORMERS regression vs default FA2 (6.84 vs 7.11)
 4236631	1.23	338.9	0.8800	discard	enforce-eager: CUDA graphs essential, eager mode 5.8x slower (1.23 vs 7.11)
 4236631	6.85	87.7	0.9000	discard	max-num-batched-tokens=12288 retry: stable but regression (was transient crash)
+a9c752f	6.83	88.9	0.9000	discard	pre-guidellm warmup: 8 concurrent requests didn't improve (6.83 vs 7.11)
+a9c752f	6.65	121.9	0.8600	discard	lm_eval num_concurrent=8 worse: accuracy dropped + throughput regressed
+a9c752f	6.85	88.3	0.9000	discard	OMP_NUM_THREADS=1 MKL_NUM_THREADS=1: no improvement (6.85 vs 7.11)
+a9c752f	6.66	153.9	0.9000	discard	guidellm-first (no lm_eval warmup): 6.8% regression — lm_eval warmup matters!

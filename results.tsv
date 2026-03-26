@@ -135,3 +135,7 @@ b7e3973	6.87	93.1	0.9000	discard	warmup-30-gpu02: 6.87 (slight improvement — c
 b7e3973	0.00	0.0	0.0000	crash	exp-112 compilation-config level=3: JSON format rejected by vLLM 0.18.0
 fe9e3c5	7.00	87.6	0.9000	keep	warmup-31-gpu01 (new base w/ cuDNN benchmark): 7.00 CONFIRMED — gpu-01 steady at 7.00!
 fe9e3c5	6.85	87.8	0.9000	discard	warmup-31-gpu02: 6.85 (gpu-02 still at ~6.85)
+12833a7	7.04	89.3	0.9000	keep	exp-113 max-num-seqs=176: 7.04 (e2e=1095ms — better than 168 seqs 7.00; update base)
+12833a7	6.85	115.6	0.9000	discard	warmup-32-gpu02: 6.85 (steady)
+12833a7	6.85	111.0	0.9000	discard	exp-114 max-num-seqs=184: regression (6.85 vs 7.04 with 176) — 184 seqs exceeds sweet spot
+12833a7	6.66	129.4	0.9000	discard	exp-115 max-num-seqs=176 on gpu-02: 6.66 (variance dip — gpu-02 at different state)

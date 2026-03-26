@@ -213,3 +213,5 @@ a85f589	6.85	85.5	0.9000	discard	exp-149-retest gpu-02: 6.85 (good state; confir
 9370a92	6.66	139.9	0.9000	discard	exp-158 VLLM_CUDAGRAPH_CAPTURE_SIZES=1,2,4,8,16: 6.66 (bad state p50=109ms — inconclusive)
 3926cb3	6.65	144.2	0.9000	discard	exp-159 disable-log-stats+no-log-requests: 6.65 (bad state — inconclusive)
 3926cb3	6.81	137.9	0.9000	discard	exp-160 TOKENIZERS_PARALLELISM=false: 6.81 (good state but p95=137ms worse — neutral/discard)
+089e4c2	6.61	146.2	0.9000	discard	exp-161 optimization-level=3 retest: 6.61 (bad state again — persistent gpu-01 bad)
+089e4c2	6.83	87.0	0.9000	discard	exp-162 gdn-prefill-backend=flashinfer: 6.83 (good state — neutral, no improvement)

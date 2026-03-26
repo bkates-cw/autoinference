@@ -223,3 +223,5 @@ e10329e	6.86	89.7	0.9000	keep?	exp-166 VLLM_ATTENTION_BACKEND=TRITON_MLA: 6.86 (
 4b63b3d	6.66	123.5	0.9000	discard	exp-168 TRITON_MLA retest gpu-02: 6.66 (bad state — TRITON_MLA confirmed neutral)
 1974f1a	6.81	90.2	0.9000	discard	exp-169 no-enable-log-requests clean retest: 6.81 (good state — slightly worse, confirmed discard)
 1974f1a	6.85	91.9	0.9000	keep	exp-170 disable-log-stats clean retest: 6.85 (good state — confirmed +0.02! 2nd data point matches exp-139)
+1449e7b	6.79	98.5	0.9000	discard	exp-171 max-num-seqs=192 with new base: 6.79 (good state — still worse, 176 optimal)
+1449e7b	6.66	127.7	0.9000	discard	exp-172 max-num-seqs=184: 6.66 (bad state — inconclusive)

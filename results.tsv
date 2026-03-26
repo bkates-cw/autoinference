@@ -61,3 +61,9 @@ b924c82	7.11	86.4	0.9000	discard	max-num-seqs=176: same as 160 (7.11 req/s), con
 b924c82	0.00	0.0	0.0000	crash	quantization=fp8: dynamic weight quant not supported for MoE in this vLLM version
 b924c82	0.00	0.0	0.0000	crash	num-scheduler-steps=2: unrecognized argument in vLLM 0.18.0
 b924c82	0.00	0.0	0.0000	crash	num-scheduler-steps=4: unrecognized argument in vLLM 0.18.0
+d49d48d	6.66	121.1	0.9200	discard	VRAM-min gpu-util=0.90: 6.66 req/s (93.7%, below 95% threshold of 6.75)
+d49d48d	0.00	0.0	0.0000	crash	VRAM-min gpu-util=0.87 + 160 seqs: OOM, not enough KV cache after CUDA graphs
+d49d48d	6.62	124.8	0.9200	discard	VRAM-min gpu-util=0.92: 6.62 req/s (93.1%, below 95% threshold of 6.75)
+d49d48d	2.41	2565.2	0.9200	discard	VRAM-min gpu-util=0.87 + max-num-seqs=16: 2.41 req/s (KV preemption thrash)
+d49d48d	6.60	122.7	0.9000	discard	VRAM-min gpu-util=0.93: 6.60 req/s (92.8%, below threshold) — min VRAM = 0.94
+d49d48d	0.00	0.0	0.0000	crash	disable-log-requests: unrecognized argument in vLLM 0.18.0

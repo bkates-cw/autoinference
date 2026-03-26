@@ -209,3 +209,5 @@ a85f589	6.85	85.5	0.9000	discard	exp-149-retest gpu-02: 6.85 (good state; confir
 09d7e9c	0.00	0.0	0.0000	crash	exp-154 optimization-level=4: crash — only 0-3 valid; retrying with 3
 17b52ef	6.65	131.7	0.9000	discard	exp-155 optimization-level=3: 6.65 (bad state p50=107ms — inconclusive)
 17b52ef	6.62	141.1	0.9000	discard	exp-156 no-enable-log-requests retest: 6.62 (bad state p50=111ms — persistent bad state)
+9370a92	6.63	132.3	0.9000	discard	exp-157 MALLOC_ARENA_MAX=4: 6.63 (bad state p50=111ms — inconclusive)
+9370a92	6.66	139.9	0.9000	discard	exp-158 VLLM_CUDAGRAPH_CAPTURE_SIZES=1,2,4,8,16: 6.66 (bad state p50=109ms — inconclusive)

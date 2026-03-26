@@ -84,6 +84,10 @@ vllm_args = {
     # exp-103: +0.16 req/s gain (7.00 vs 6.84)
     "uvicorn-log-level": "critical",
 
+    # Disable periodic stats logging.
+    # exp-138: bad state; exp-139: good state 6.85 (+0.02 marginal); exp-170: fresh retest
+    "disable-log-stats": True,
+
     # --- Speculative decoding (uncomment to enable) ---
     # Uses --speculative-config JSON. Best for low-QPS, memory-bound workloads.
     # NOTE: old flags (--speculative-model, --num-speculative-tokens) are REMOVED in vLLM 0.8+.

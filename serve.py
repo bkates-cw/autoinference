@@ -39,21 +39,18 @@ PORT = 8000
 vllm_args = {
     # Token budget per scheduling step. Highest-leverage dial.
     # Higher = better throughput, lower = better per-request latency.
-    # Try: 2048, 4096, 8192, 16384
-    # exp-02: doubled to 16384 → +30% throughput (6.82 req/s), p95_ttft 634→184ms
-    # exp-44: 32768 no benefit vs 16384 (6.58 req/s same)
+    # exp-02: doubled to 16384 → +30% throughput; exp-48: 32768 marginal regression
     "max-num-batched-tokens": 16384,
 
     # Max concurrent sequences in a batch.
     # Higher = more throughput, but more KV-cache pressure.
-    # Try: 8, 16, 32, 64, 128
-    # exp-04: doubled to 128 → 6.82→6.90, p95_ttft 184→120ms
-    "max-num-seqs": 128,
+    # exp-04: 128 → 6.90; exp-50/51: 160 → 7.11-7.12 req/s (new best); 192 no improvement
+    "max-num-seqs": 160,
 
     # GPU memory fraction for KV cache.
     # Higher = more cache, fewer preemptions. Too high = OOM risk.
-    # exp-38: 0.92 + CUDAGRAPHS=1 gives 6.58 req/s; exp-40: same config + thinking fix
-    "gpu-memory-utilization": 0.92,
+    # exp-50/51: 0.94 + 160 seqs → 7.11-7.12 req/s new best
+    "gpu-memory-utilization": 0.94,
 
     # KV cache precision. FP8 saves ~50% cache memory.
     # Try: auto, fp8
@@ -76,12 +73,9 @@ vllm_args = {
     # Try: 1, 2, 4
     "tensor-parallel-size": 1,
 
-    # Disable thinking for /v1/completions: enable_thinking:false and suppress_tokens both fail in
-    # vLLM 0.18.0 for completions. Chat completions endpoint respects enable_thinking via
-    # chat_template_kwargs. ThinkStripper below uses /v1/chat/completions for the format canary.
+    # Disable thinking for /v1/completions: use chat completions in ThinkStripper below.
+    # exp-49: reasoning-parser NOT needed and adds overhead (6.79 vs 6.65 without it)
     "override-generation-config": '{"enable_thinking": false}',
-    # exp-45: Enable Qwen3 reasoning parser so chat completions correctly handles thinking disable
-    "reasoning-parser": "qwen3",
 
     # --- Speculative decoding (uncomment to enable) ---
     # Uses --speculative-config JSON. Best for low-QPS, memory-bound workloads.

@@ -34,3 +34,7 @@ a9f9771	0.00	0.0	0.0000	crash	VLLM_FUSED_MOE_CHUNK_SIZE=4096 engine init failed
 5804071	5.24	639.4	0.9400	discard	max-num-seqs=192 + gpu-util=0.88 + CUDAGRAPHS profiler: format_valid_rate=0.875 fails
 5804071	0.00	0.0	0.0000	crash	async-scheduling OOM: vLLM 0.18 CUDA graph accounting -1.18 GiB
 5804071	0.00	0.0	0.0000	crash	VLLM_FUSED_MOE_CHUNK_SIZE=49152 OOM: vLLM 0.18 CUDA graph accounting -1.18 GiB
+778bb10	0.00	0.0	0.0000	crash	gpu-util=0.87 CUDAGRAPHS=1: KV cache only 0.02 GiB engine refuses
+778bb10	0.00	0.0	0.0000	crash	gpu-util=0.87 CUDAGRAPHS=1 192 seqs: KV cache -0.04 GiB
+778bb10	5.54	561.5	0.9200	discard	gpu-util=0.88 CUDAGRAPHS=1: format_valid_rate=0.875 guardrail fail
+778bb10	5.27	636.9	0.9200	discard	gpu-util=0.90 CUDAGRAPHS=1: format_valid_rate=0.875 guardrail fail

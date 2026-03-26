@@ -203,3 +203,5 @@ a85f589	7.11	128.9	0.9000	discard	exp-149 VLLM_LOGGING_LEVEL=ERROR: 7.11 (noise 
 a85f589	6.65	126.1	0.9000	discard	exp-150 disable-log-stats=True: 6.65 (bad state p50=109ms — inconclusive)
 a85f589	6.84	87.8	0.9000	discard	warmup-56 gpu-01: 6.84 (good state; ERROR logging ≈ WARNING baseline 6.83)
 a85f589	6.85	85.5	0.9000	discard	exp-149-retest gpu-02: 6.85 (good state; confirms ERROR logging = no improvement over WARNING)
+91dbf2c	6.66	141.3	0.9000	discard	exp-151 no-enable-log-requests: 6.66 (bad state p50=108ms — inconclusive, need retest)
+91dbf2c	6.84	86.6	0.9000	discard	exp-152 VLLM_FUSED_MOE_CHUNK_SIZE=65536: 6.84 (good state — neutral, 32768 already optimal)

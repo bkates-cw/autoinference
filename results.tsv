@@ -185,3 +185,5 @@ ea6c943	6.64	107.9	0.9000	discard	exp-138 OMP+TOKENIZERS+disable-log-stats: 6.64
 ea6c943	6.63	108.1	0.9000	discard	warmup-48-gpu02: 6.63 (both clusters bad state again)
 154881d	6.83	74.8	0.9000	discard	warmup-49-gpu01: 6.83 (recovered to good state! p50_ttft=75ms)
 154881d	6.63	112.5	0.9000	discard	warmup-50-gpu02: 6.63 (gpu-02 still bad state — persistent bad state for >5 runs)
+47ce5c3	6.85	73.9	0.9000	discard	exp-139 disable-log-stats: 6.85 (vs 6.83 baseline) — no meaningful improvement (+0.02 noise)
+47ce5c3	6.80	76.2	0.9000	discard	warmup-51-gpu02: 6.80 (recovering — p50_ttft=76ms, mostly good state)

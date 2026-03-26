@@ -157,6 +157,10 @@ def main():
     # exp-80: reduce vLLM log verbosity → less Python GIL contention from request logging
     # INFO logs every request; WARNING suppresses request logs → +0.10-0.16 req/s gain
     _os.environ["VLLM_LOGGING_LEVEL"] = "WARNING"
+    # exp-120: NVIDIA Transformer Engine optimizations for H100.
+    # Non-deterministic algos enable faster TE kernel selection (+0.12 req/s observed).
+    _os.environ["NVTE_ALLOW_NONDETERMINISTIC_ALGO"] = "1"
+    _os.environ["NVTE_FUSED_ATTN"] = "1"
     # --- Init W&B ---
     wandb.init(
         entity=os.environ.get("WANDB_ENTITY", None),

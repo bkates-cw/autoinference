@@ -151,3 +151,5 @@ b7d36a6	6.79	149.5	0.9400	discard	exp-119 max-num-seqs=8: 6.79 (high TTFT — ba
 b7d36a6	6.64	144.1	0.9000	discard	warmup-35-gpu02: 6.64 (high TTFT — both clusters in bad state, unusual)
 6f81b62	6.79	121.1	0.9000	discard	warmup-36-gpu01: 6.79 (recovering from bad state — p50_ttft back to 75ms)
 6f81b62	6.83	96.6	0.9000	discard	warmup-36-gpu02: 6.83 (recovered — cluster back to normal)
+352190b	6.94	90.2	0.9000	keep	exp-120 NVTE_ALLOW_NONDETERMINISTIC_ALGO=1 + NVTE_FUSED_ATTN=1: 6.94 vs 6.79 baseline; add to base
+352190b	6.82	102.1	0.9000	discard	warmup-37-gpu02: 6.82 (normal recovery)

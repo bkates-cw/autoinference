@@ -39,7 +39,7 @@ PORT = 8000
 vllm_args = {
     # Token budget per scheduling step. Highest-leverage dial.
     # Higher = better throughput, lower = better per-request latency.
-    # exp-02: doubled to 16384 → +30% throughput; exp-48: 32768 marginal regression
+    # exp-02: 16384 → +30%; exp-48: 32768 regression; exp-53: 24576 big regression (p95=621ms)
     "max-num-batched-tokens": 16384,
 
     # Max concurrent sequences in a batch.
@@ -63,6 +63,7 @@ vllm_args = {
 
     # Context cap. Lower = more KV capacity = more concurrency.
     # Try: 2048, 4096, 8192
+    # exp-55: 2048 regression (6.87 vs 7.11); 4096 is best
     "max-model-len": 4096,
 
     # Prefix caching: reuse KV blocks for shared few-shot prefixes.

@@ -54,3 +54,6 @@ c26caa5	6.79	148.8	0.9200	keep	no reasoning-parser: +2.1% (6.79 vs 6.65) TTFT re
 c26caa5	7.12	0.0	0.9000	keep	max-num-seqs=160 + gpu-util=0.94 + reasoning-parser: new best 7.12 req/s
 c26caa5	7.11	94.5	0.9000	keep	max-num-seqs=160 + gpu-util=0.94 no-reasoner: 7.11 req/s TTFT=94.5ms (best config)
 c26caa5	7.07	143.0	0.9000	discard	max-num-seqs=192 + gpu-util=0.95: no improvement over 160 seqs (7.07 vs 7.11)
+566aae8	6.62	621.2	0.9200	discard	max-num-batched-tokens=24576 big p95_ttft regression (621ms vs 94ms at 16384)
+566aae8	7.08	92.8	0.9000	discard	enable-chunked-prefill=True with 160 seqs: 7.08 vs 7.11 marginal regression
+566aae8	6.87	132.3	0.9000	discard	max-model-len=2048 regression: less KV capacity doesn't help (6.87 vs 7.11)

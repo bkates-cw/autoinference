@@ -177,3 +177,5 @@ d8451e1	6.66	108.6	0.9000	discard	warmup-44-gpu01: 6.66 (gpu-01 still bad state 
 292f6fd	6.84	74.5	0.9000	discard	warmup-46-gpu02: 6.84 (good state! both clusters recovered)
 a278209	0.00	0.0	0.0000	crash	exp-133 moe-backend=cutlass: crash — CUTLASS not compiled/available for this model
 a278209	6.84	74.3	0.9000	discard	exp-134 moe-backend=triton: 6.84 (same as auto=6.84; triton IS the default)
+f2f535d	6.81	74.2	0.9000	discard	exp-135 VLLM_ATTENTION_BACKEND=FLASHINFER: 6.81 (worse than 6.85 auto) — flash_attn better
+f2f535d	6.85	73.6	0.9000	discard	warmup-47-gpu02: 6.85 (good state stable — good state ceiling ~6.85-6.87)

@@ -133,3 +133,5 @@ f35ed31	6.83	93.0	0.9000	discard	warmup-28-gpu01: 6.83 (steady state continues)
 b7e3973	7.00	133.8	0.9000	keep	exp-111 TORCH_CUDNN_BENCHMARK=1: 7.00 (e2e=1097ms, add to base config)
 b7e3973	6.87	93.1	0.9000	discard	warmup-30-gpu02: 6.87 (slight improvement — cluster still warming)
 b7e3973	0.00	0.0	0.0000	crash	exp-112 compilation-config level=3: JSON format rejected by vLLM 0.18.0
+fe9e3c5	7.00	87.6	0.9000	keep	warmup-31-gpu01 (new base w/ cuDNN benchmark): 7.00 CONFIRMED — gpu-01 steady at 7.00!
+fe9e3c5	6.85	87.8	0.9000	discard	warmup-31-gpu02: 6.85 (gpu-02 still at ~6.85)

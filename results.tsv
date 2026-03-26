@@ -139,3 +139,7 @@ fe9e3c5	6.85	87.8	0.9000	discard	warmup-31-gpu02: 6.85 (gpu-02 still at ~6.85)
 12833a7	6.85	115.6	0.9000	discard	warmup-32-gpu02: 6.85 (steady)
 12833a7	6.85	111.0	0.9000	discard	exp-114 max-num-seqs=184: regression (6.85 vs 7.04 with 176) — 184 seqs exceeds sweet spot
 12833a7	6.66	129.4	0.9000	discard	exp-115 max-num-seqs=176 on gpu-02: 6.66 (variance dip — gpu-02 at different state)
+e6be508	6.78	120.0	0.9000	discard	exp-116 max-num-seqs=180: regression (6.78 vs 7.04 with 176) — 180 seqs worse, 176 is sweet spot
+e6be508	6.65	124.1	0.9000	discard	warmup-33-gpu02: 6.65 (high TTFT variance — bad cluster state)
+e6be508	6.78	120.0	0.9000	discard	exp-116 max-num-seqs=180: 6.78 (regression — 176 is sweet spot)
+e6be508	6.65	124.1	0.9000	discard	warmup-33-gpu02: 6.65 (cluster in poor state)

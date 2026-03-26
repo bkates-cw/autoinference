@@ -158,6 +158,12 @@ def main():
     # exp-80: reduce vLLM log verbosity → less Python GIL contention from request logging
     # INFO logs every request; WARNING suppresses request logs → +0.10-0.16 req/s gain
     _os.environ["VLLM_LOGGING_LEVEL"] = "WARNING"
+    # exp-117: Increase CUDA kernel cache from default 256MB to 4GB.
+    # vLLM compiles many CUDA kernels (MoE routing, attention, activations).
+    # Default 256MB cache causes evictions → kernels recompiled on next use → slower.
+    # Setting 4GB ensures all kernels stay cached → consistent performance from run 1.
+    # This may be the root cause of the "warming effect" observed over 30+ runs.
+    _os.environ["CUDA_CACHE_MAXSIZE"] = "4294967296"  # 4 GB
     # --- Init W&B ---
     wandb.init(
         entity=os.environ.get("WANDB_ENTITY", None),

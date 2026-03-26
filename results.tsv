@@ -128,3 +128,5 @@ f35ed31	6.83	120.8	0.9000	discard	warmup-27-gpu02 (168 seqs base): 6.83 (cluster
 f35ed31	0.00	0.0	0.0000	crash	exp-108 max-seq-len-to-capture=512: unrecognized argument in vLLM 0.18.0
 f35ed31	6.81	139.6	0.9000	discard	exp-109 VLLM_USE_TRITON_FLASH_ATTN=1: no improvement (6.81 ≈ baseline — FA2 default better)
 f35ed31	6.83	93.0	0.9000	discard	warmup-28-gpu01: 6.83 (steady state continues)
+4754f38	6.84	95.8	0.9000	discard	exp-110 OMP/MKL/OPENBLAS_NUM_THREADS=1: no improvement (6.84 = baseline — CPU threads not the bottleneck)
+4754f38	6.85	137.8	0.9000	discard	warmup-29-gpu02: 6.85 (cluster at steady state)

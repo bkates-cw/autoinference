@@ -83,3 +83,11 @@ a9c752f	6.66	153.9	0.9000	discard	guidellm-first (no lm_eval warmup): 6.8% regre
 20185f0	6.62	122.1	0.9000	discard	max-num-batched-tokens=20480 marginal regression vs 16384 (6.62 vs 6.65)
 20185f0	6.84	98.8	0.9000	discard	baseline ctrl (no change): 6.84 confirms WARNING env gives real gain (7.00 vs 6.84)
 20185f0	6.75	124.9	0.9000	keep	VLLM_LOGGING_LEVEL=WARNING confirm on gpu-02: +0.10 improvement (6.75 vs 6.65)
+be18987	6.65	126.0	0.9000	discard	VLLM_LOGGING_LEVEL=ERROR no further gain vs WARNING (6.65 vs 6.66 baseline)
+be18987	6.66	127.3	0.9000	discard	max-model-len=3072: no improvement vs 4096 (6.66 vs 6.66)
+be18987	0.00	0.0	0.0000	crash	PYTHONOPTIMIZE=1: breaks vLLM assertions, server fails to start
+be18987	6.66	122.6	0.9000	discard	WARNING baseline confirm on gpu-02: 6.66 (steady-state ~6.65-6.75)
+be18987	0.00	0.0	0.0000	crash	preemption-mode=swap: unrecognized argument in vLLM 0.18.0
+be18987	6.82	87.1	0.9000	discard	block-size=64 gpu-02 run10: 6.82 (same as concurrent baseline 6.84 — cluster warming)
+be18987	6.64	122.8	0.9000	discard	block-size=64 gpu-01 confirm: 6.64 (no consistent improvement)
+be18987	6.84	90.7	0.9000	discard	baseline ctrl gpu-02 run11: 6.84 confirms cluster warming to 6.82-6.84 (not block-size effect)

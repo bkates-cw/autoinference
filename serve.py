@@ -51,9 +51,10 @@ vllm_args = {
 
     # GPU memory fraction for KV cache.
     # Higher = more cache, fewer preemptions. Too high = OOM risk.
-    # Try: 0.80, 0.85, 0.90, 0.95
-    # exp-12: 0.85 outperforms 0.90 (6.92 vs 6.90 — less allocation overhead)
-    "gpu-memory-utilization": 0.85,
+    # exp-12: 0.85 best; but vLLM 0.18.0 now accurately tracks CUDA graph memory.
+    # With VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=1, must be >=0.8705 for KV blocks.
+    # (model=65.53 GiB + CUDA graphs ~3.1 GiB requires >0.8567 of 80 GiB)
+    "gpu-memory-utilization": 0.87,
 
     # KV cache precision. FP8 saves ~50% cache memory.
     # Try: auto, fp8
@@ -148,6 +149,9 @@ def main():
     # Larger MoE chunk: fewer kernel launches per forward pass on H100 → +0.3% throughput
     import os as _os
     _os.environ["VLLM_FUSED_MOE_CHUNK_SIZE"] = "32768"
+    # vLLM 0.18.0: accurate CUDA graph memory accounting needed for engine to start.
+    # Without this, available_kv_cache shows -1.18 GiB and engine refuses to start.
+    _os.environ["VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS"] = "1"
 
     # --- Init W&B ---
     wandb.init(

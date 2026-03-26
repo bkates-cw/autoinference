@@ -183,3 +183,5 @@ f2f535d	6.85	73.6	0.9000	discard	warmup-47-gpu02: 6.85 (good state stable — go
 2b4bd01	0.00	0.0	0.0000	crash	exp-137 moe-backend=aiter: crash — aiter not compiled in this vLLM
 ea6c943	6.64	107.9	0.9000	discard	exp-138 OMP+TOKENIZERS+disable-log-stats: 6.64 (bad state flip — inconclusive)
 ea6c943	6.63	108.1	0.9000	discard	warmup-48-gpu02: 6.63 (both clusters bad state again)
+154881d	6.83	74.8	0.9000	discard	warmup-49-gpu01: 6.83 (recovered to good state! p50_ttft=75ms)
+154881d	6.63	112.5	0.9000	discard	warmup-50-gpu02: 6.63 (gpu-02 still bad state — persistent bad state for >5 runs)

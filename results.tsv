@@ -173,3 +173,5 @@ d8451e1	6.84	74.1	0.9000	discard	exp-130 max-num-seqs=160: 6.84 (slightly WORSE 
 d8451e1	6.66	108.6	0.9000	discard	warmup-44-gpu01: 6.66 (gpu-01 still bad state — 7+ consecutive bad runs)
 2a4ae73	6.65	111.3	0.9400	discard	exp-131 max-num-seqs=8: 6.65 (gpu-02 bad state flip — inconclusive, 2nd time failed)
 2a4ae73	6.85	74.0	0.9000	discard	warmup-45-gpu01: 6.85 (gpu-01 RECOVERED! good state — 6.85 with NVTE flags)
+292f6fd	6.81	74.5	0.9000	discard	exp-132 no NVTE flags: 6.81 (vs 6.85 with NVTE) — NVTE slightly helps (+0.04); keep NVTE
+292f6fd	6.84	74.5	0.9000	discard	warmup-46-gpu02: 6.84 (good state! both clusters recovered)

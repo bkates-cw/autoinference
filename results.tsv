@@ -195,3 +195,5 @@ d196b5d	0.00	0.0	0.0000	crash	exp-143 moe-backend=flashinfer_cutedsl: crash — 
 539344b	6.83	73.7	0.9000	discard	warmup-52-gpu02: 6.83 (gpu-02 good state! p50_ttft=74ms — retesting exp on clean state)
 1d70530	6.83	75.0	0.9000	discard	exp-145 CUDA_DEVICE_MAX_CONNECTIONS=1: 6.83 (= baseline 6.83 — no change; discard)
 1d70530	6.64	113.0	0.9000	discard	warmup-53-gpu01: 6.64 (gpu-01 persistent bad state p50_ttft=113ms)
+9a13f5e	6.77	75.9	0.9000	discard	exp-146 PYTORCH_NVFUSER_DISABLE=1: 6.77 (worse than 6.83 — NVFuser helps, keep default)
+9a13f5e	6.83	75.9	0.9000	discard	warmup-54-gpu01: 6.83 (recovered! both clusters in good state now)

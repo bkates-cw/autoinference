@@ -165,3 +165,5 @@ bbe9b98	0.00	0.0	0.0000	crash	exp-125 --num-scheduler-steps=4: crash — flag re
 bbe9b98	6.86	72.9	0.9000	discard	warmup-41-gpu02: 6.86 (recovering! p50_ttft=73ms — good state returning)
 786d40e	6.63	111.9	0.9000	discard	exp-126 performance-mode=throughput: 6.63 (gpu-01 bad state — inconclusive; retest on gpu-02)
 786d40e	0.00	0.0	0.0000	crash	exp-127 moe-backend=deep_gemm: crash — DeepGEMM not compiled in this vLLM installation
+0fe447f	6.87	76.0	0.9000	discard	exp-128 performance-mode=throughput: 6.87 (same as baseline 6.86) — no improvement
+0fe447f	6.63	111.0	0.9000	discard	warmup-42-gpu01: 6.63 (gpu-01 persistently bad state, p50_ttft=111ms, 5+ consecutive bad runs)

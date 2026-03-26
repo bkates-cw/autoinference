@@ -111,3 +111,9 @@ b3d0614	6.85	88.5	0.9000	discard	block-size=32 retry (CUDAGRAPHS fix resolves cr
 b3d0614	6.66	122.0	0.9000	discard	FUSED_MOE_CHUNK=8192: regression vs 32768 (6.66 vs 6.86) — smaller chunks worse
 b3d0614	6.84	93.0	0.9000	discard	VLLM_MOE_PADDING=1: no improvement (6.84 ≈ baseline — padding doesn't help MoE efficiency)
 b3d0614	6.65	129.9	0.9000	discard	warmup-20 gpu-02: 6.65 (high variance ±0.2 req/s — cluster state fluctuates)
+212ea3e	6.84	89.8	0.9000	discard	warmup-22 gpu-01 run22: 6.84 (plateau — not continuing to climb past 6.86)
+212ea3e	6.83	93.0	0.9000	discard	warmup-23 gpu-02 run23: 6.83 (plateau — 6.83-6.86 seems to be true ceiling for these nodes)
+212ea3e	6.74	130.6	0.9000	discard	exp-101 OMP_WAIT_POLICY=passive + KMP_BLOCKTIME=0: regression (6.74 vs 6.84) — CPU spin changes hurt, not help
+212ea3e	6.85	88.7	0.9000	discard	warmup-24 gpu-02 run24: 6.85 (plateau — steady state at 6.83-6.86)
+212ea3e	6.84	86.8	0.9000	discard	exp-102 disable-log-stats=True: no improvement (6.84 = baseline — stats already suppressed by WARNING level)
+212ea3e	6.62	125.3	0.9000	discard	warmup-25 gpu-02 run25: 6.62 (variance dip — cluster fluctuates ±0.2)

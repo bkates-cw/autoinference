@@ -50,7 +50,8 @@ vllm_args = {
     # GPU memory fraction for KV cache.
     # Higher = more cache, fewer preemptions. Too high = OOM risk.
     # exp-50/51: 0.94 + 160 seqs → 7.11-7.12 req/s new best
-    "gpu-memory-utilization": 0.94,
+    # exp-104: try 0.95 — one more percent for KV cache; risk: close to OOM on H100 80GB
+    "gpu-memory-utilization": 0.95,
 
     # KV cache precision. FP8 saves ~50% cache memory.
     # Try: auto, fp8
@@ -151,7 +152,6 @@ def main():
     # exp-80: reduce vLLM log verbosity → less Python GIL contention from request logging
     # INFO logs every request; WARNING suppresses request logs → +0.10-0.16 req/s gain
     _os.environ["VLLM_LOGGING_LEVEL"] = "WARNING"
-
     # --- Init W&B ---
     wandb.init(
         entity=os.environ.get("WANDB_ENTITY", None),

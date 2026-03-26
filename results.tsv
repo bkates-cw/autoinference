@@ -67,3 +67,5 @@ d49d48d	6.62	124.8	0.9200	discard	VRAM-min gpu-util=0.92: 6.62 req/s (93.1%, bel
 d49d48d	2.41	2565.2	0.9200	discard	VRAM-min gpu-util=0.87 + max-num-seqs=16: 2.41 req/s (KV preemption thrash)
 d49d48d	6.60	122.7	0.9000	discard	VRAM-min gpu-util=0.93: 6.60 req/s (92.8%, below threshold) — min VRAM = 0.94
 d49d48d	0.00	0.0	0.0000	crash	disable-log-requests: unrecognized argument in vLLM 0.18.0
+b92a704	6.82	90.6	0.9000	discard	block-size=8: more granular KV blocks but 4% throughput regression (6.82 vs 7.11)
+b92a704	6.63	148.7	0.9000	discard	PYTORCH_CUDA_ALLOC_CONF=expandable_segments: no improvement (6.63 vs 7.11)

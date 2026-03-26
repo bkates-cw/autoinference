@@ -121,3 +121,10 @@ b3d0614	6.65	129.9	0.9000	discard	warmup-20 gpu-02: 6.65 (high variance ±0.2 re
 31c3e29	6.66	130.0	0.9000	discard	exp-104 gpu-memory-utilization=0.95: regression (6.66 vs 6.84) — extra 1% GPU mem causes pressure/OOM edge
 31c3e29	6.78	125.2	0.9000	discard	warmup-26-gpu01 (uvicorn-log-level=critical base): 6.78 — still within variance range
 31c3e29	6.67	139.1	0.9000	discard	warmup-26-gpu02 (uvicorn-log-level=critical base): 6.67 — cluster still fluctuating
+f35ed31	6.82	136.2	0.9000	discard	exp-105 VLLM_NO_USAGE_STATS=1 + TOKENIZERS_PARALLELISM=false: no improvement (6.82 ≈ baseline)
+f35ed31	6.86	87.4	0.9000	keep	exp-106 max-num-seqs=168: 6.86 with e2e=1120ms (slightly better e2e than 160 seqs; confirm)
+f35ed31	7.02	106.1	0.9000	keep	exp-107 max-num-seqs=168 confirm gpu-01: 7.02 (e2e=1097ms — good; 168 seqs in base config)
+f35ed31	6.83	120.8	0.9000	discard	warmup-27-gpu02 (168 seqs base): 6.83 (cluster variance continues)
+f35ed31	0.00	0.0	0.0000	crash	exp-108 max-seq-len-to-capture=512: unrecognized argument in vLLM 0.18.0
+f35ed31	6.81	139.6	0.9000	discard	exp-109 VLLM_USE_TRITON_FLASH_ATTN=1: no improvement (6.81 ≈ baseline — FA2 default better)
+f35ed31	6.83	93.0	0.9000	discard	warmup-28-gpu01: 6.83 (steady state continues)

@@ -153,3 +153,9 @@ b7d36a6	6.64	144.1	0.9000	discard	warmup-35-gpu02: 6.64 (high TTFT — both clus
 6f81b62	6.83	96.6	0.9000	discard	warmup-36-gpu02: 6.83 (recovered — cluster back to normal)
 352190b	6.94	90.2	0.9000	keep	exp-120 NVTE_ALLOW_NONDETERMINISTIC_ALGO=1 + NVTE_FUSED_ATTN=1: 6.94 vs 6.79 baseline; add to base
 352190b	6.82	102.1	0.9000	discard	warmup-37-gpu02: 6.82 (normal recovery)
+fc2fbe4	6.77	148.4	0.9000	discard	warmup-38-gpu01 (NVTE flags): 6.77 — high TTFT again; NVTE not confirmed
+fc2fbe4	6.65	169.3	0.9000	discard	exp-121 NVTE confirm gpu-02: 6.65 — both clusters bad state; NVTE gain was variance
+fc2fbe4	0.00	0.0	0.0000	crash	exp-122 max-model-len=512: crash — 5-shot GSM8K prompts > 512 tokens
+fc2fbe4	0.00	0.0	0.0000	crash	exp-123 max-model-len=1024: crash — 5-shot GSM8K prompts > 1024 tokens (need > 2048)
+fc2fbe4	6.62	109.0	0.9000	discard	warmup-39-gpu01: 6.62 (bad state — p50_ttft=109ms, clusters still not recovered)
+fc2fbe4	6.68	78.9	0.9000	discard	warmup-39-gpu02: 6.68 (partial recovery — p50_ttft=79ms)

@@ -117,3 +117,7 @@ b3d0614	6.65	129.9	0.9000	discard	warmup-20 gpu-02: 6.65 (high variance ±0.2 re
 212ea3e	6.85	88.7	0.9000	discard	warmup-24 gpu-02 run24: 6.85 (plateau — steady state at 6.83-6.86)
 212ea3e	6.84	86.8	0.9000	discard	exp-102 disable-log-stats=True: no improvement (6.84 = baseline — stats already suppressed by WARNING level)
 212ea3e	6.62	125.3	0.9000	discard	warmup-25 gpu-02 run25: 6.62 (variance dip — cluster fluctuates ±0.2)
+31c3e29	7.00	91.1	0.9000	keep	exp-103 uvicorn-log-level=critical: +0.16 req/s (7.00 vs 6.84) — uvicorn access log GIL overhead; add to base config
+31c3e29	6.66	130.0	0.9000	discard	exp-104 gpu-memory-utilization=0.95: regression (6.66 vs 6.84) — extra 1% GPU mem causes pressure/OOM edge
+31c3e29	6.78	125.2	0.9000	discard	warmup-26-gpu01 (uvicorn-log-level=critical base): 6.78 — still within variance range
+31c3e29	6.67	139.1	0.9000	discard	warmup-26-gpu02 (uvicorn-log-level=critical base): 6.67 — cluster still fluctuating

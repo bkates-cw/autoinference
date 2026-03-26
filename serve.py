@@ -45,7 +45,8 @@ vllm_args = {
     # Max concurrent sequences in a batch.
     # Higher = more throughput, but more KV-cache pressure.
     # exp-04: 128 → 6.90; exp-50/51: 160 → 7.11-7.12 req/s (new best); 192 no improvement
-    "max-num-seqs": 160,
+    # exp-106: fine-tune between 160 and 192 → try 168
+    "max-num-seqs": 168,
 
     # GPU memory fraction for KV cache.
     # Higher = more cache, fewer preemptions. Too high = OOM risk.
@@ -78,6 +79,11 @@ vllm_args = {
     # Disable thinking for /v1/completions: use chat completions in ThinkStripper below.
     # exp-49: reasoning-parser NOT needed and adds overhead (6.79 vs 6.65 without it)
     "override-generation-config": '{"enable_thinking": false}',
+
+    # Suppress uvicorn HTTP access logs → less GIL contention from web server logging.
+    # uvicorn logs every HTTP request at "info" by default; critical suppresses all.
+    # exp-103: +0.16 req/s gain (7.00 vs 6.84)
+    "uvicorn-log-level": "critical",
 
     # --- Speculative decoding (uncomment to enable) ---
     # Uses --speculative-config JSON. Best for low-QPS, memory-bound workloads.

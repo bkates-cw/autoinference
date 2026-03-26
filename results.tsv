@@ -103,3 +103,11 @@ a2f2def	6.85	90.5	0.9000	discard	baseline warmup run14 gpu-02: 6.85 — cluster 
 83e9a0f	6.83	90.5	0.9000	discard	FUSED_MOE_CHUNK=49152 retry (CUDAGRAPHS fix resolves OOM): 6.83 ≈ baseline 6.84 (not better than 32768)
 83e9a0f	0.00	0.0	0.0000	crash	disable-hybrid-kv-cache-manager: engine init crash (flag incompatible with V1 engine)
 83e9a0f	6.65	120.5	0.9000	discard	CUDA_DEVICE_MAX_CONNECTIONS=32: no improvement (6.65 vs 6.85 baseline — variance)
+b3d0614	6.74	124.7	0.9000	discard	warmup-17 gpu-01: 6.74 (variance — cluster not monotonically improving)
+b3d0614	6.84	88.2	0.9000	discard	warmup-18 gpu-02: 6.84 (stable at 6.84-6.86)
+b3d0614	0.00	0.0	0.0000	crash	PYTORCH_CUDA_ALLOC_CONF=backend:cudaMallocAsync: crash (conflicts with vLLM memory manager)
+b3d0614	6.86	86.3	0.9000	discard	warmup-19 gpu-02: 6.86 — new best baseline! cluster still slowly warming
+b3d0614	6.85	88.5	0.9000	discard	block-size=32 retry (CUDAGRAPHS fix resolves crash): stable now, 6.85 ≈ default 16 (no gain)
+b3d0614	6.66	122.0	0.9000	discard	FUSED_MOE_CHUNK=8192: regression vs 32768 (6.66 vs 6.86) — smaller chunks worse
+b3d0614	6.84	93.0	0.9000	discard	VLLM_MOE_PADDING=1: no improvement (6.84 ≈ baseline — padding doesn't help MoE efficiency)
+b3d0614	6.65	129.9	0.9000	discard	warmup-20 gpu-02: 6.65 (high variance ±0.2 req/s — cluster state fluctuates)
